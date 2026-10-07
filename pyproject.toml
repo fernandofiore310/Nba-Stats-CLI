@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nba-stats-cli"
+version = "1.0.0"
+dependencies = []
+requires-python = ">=3.12"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.3.0",
+    "mypy>=1.8.0",
+]
+
+[tool.ruff]
+# Mantém os diretórios padrão que o Ruff já ignora (.venv, .git, etc.) 
+# e adiciona os seguintes diretórios que quero ignorar:
+extend-exclude = []
+
+[tool.mypy]
+strict = true
+disallow_untyped_defs = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nba_stats_cli"]
