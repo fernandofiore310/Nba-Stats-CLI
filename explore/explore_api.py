@@ -1,7 +1,8 @@
 import os
-import requests
-import dotenv
 import time
+
+import dotenv
+import requests
 
 # H1
 # Tempo: 25min36s
