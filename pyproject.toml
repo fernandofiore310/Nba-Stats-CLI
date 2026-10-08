@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "nba-stats-cli"
+name = "nba_stats_cli"
 version = "1.0.0"
 dependencies = []
 requires-python = ">=3.12"
@@ -22,7 +22,3 @@ extend-exclude = []
 
 [tool.mypy]
 strict = true
-disallow_untyped_defs = true
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/nba_stats_cli"]

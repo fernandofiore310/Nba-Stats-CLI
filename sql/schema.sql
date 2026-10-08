@@ -19,12 +19,12 @@ CREATE TABLE players (
     position  TEXT NOT NULL,
     height  TEXT NOT NULL,
     weight  TEXT NOT NULL,
-    jersey_number TEXT NOT NULL,
-    college TEXT NOT NULL,
+    jersey_number TEXT,
+    college TEXT,
     country TEXT NOT NULL,
-    draft_year INTEGER NOT NULL,
-    draft_round INTEGER NOT NULL,
-    draft_number INTEGER NOT NULL,
+    draft_year INTEGER,
+    draft_round INTEGER,
+    draft_number INTEGER,
     team_id INTEGER NOT NULL REFERENCES teams(id)
 );
 
@@ -54,5 +54,5 @@ CREATE TABLE games (
     home_team_id INTEGER NOT NULL REFERENCES teams(id),
     visitor_team_id INTEGER NOT NULL REFERENCES teams(id),
     CHECK (home_team_id <> visitor_team_id),
-    CHECK (home_team_score AND visitor_team_score >= 0)
+    CHECK (home_team_score >= 0 AND visitor_team_score >= 0)
 );
