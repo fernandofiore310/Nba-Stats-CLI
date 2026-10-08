@@ -5,7 +5,10 @@ build-backend = "hatchling.build"
 [project]
 name = "nba_stats_cli"
 version = "1.0.0"
-dependencies = []
+dependencies = [
+    "requests",
+    "python-dotenv",
+]
 requires-python = ">=3.12"
 
 [dependency-groups]
