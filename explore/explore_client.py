@@ -1,29 +1,30 @@
 import time
+from typing import Any
 
-from nba_stats_cli.cliente import busca_pagina
+from nba_stats_cli.cliente import get_page
 
 
-def printa_players(data: dict, n: int) -> None:
+def printa_players(data: list[dict[str, Any]], n: int) -> None:
     for i, player in enumerate(data, start=1):
         print(f"{player['first_name']} {player['last_name']}")
         if i == n: break
 
-def monta_set(data: dict) -> set:
+def monta_set(data: list[dict[str, Any]]) -> set[int]:
     set1 = set()
     for player in data:
         set1.add(player['id'])
     return set1
 
 if __name__ == "__main__":
-    endpoint = "https://api.balldontlie.io/v1/players"
-    params = {}
+    endpoint = "players"
+    params: dict[str, Any] = {}
     c1 = 0
-    dic = busca_pagina(endpoint=endpoint, params=params, cursor=c1)
+    dic = get_page(endpoint=endpoint, params=params, cursor=c1)
 
     data = dic['data']
     meta = dic['meta']
 
-    n = 5
+    n = 10
 
     printa_players(data=data, n=n)
 
@@ -33,7 +34,7 @@ if __name__ == "__main__":
 
     time.sleep(13)
 
-    dic2 = busca_pagina(endpoint=endpoint, params=params, cursor=c2)
+    dic2 = get_page(endpoint=endpoint, params=params, cursor=c2)
 
     data2 = dic2['data']
     
