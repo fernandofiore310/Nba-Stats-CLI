@@ -14,3 +14,9 @@ Não, ele segue normal. Para que o programa seja interrompido e o desenvolvedor 
 
 ### Por que toda requisição deveria ter um timeout?
 Porque caso ele nao seja usado, uma requisicao pode ficar rodando por tempo indefinido, o que seria ruim para o cliente.
+
+### Por que a espera cresce, em vez de ser fixa? Pense em mil clientes tentando de novo ao mesmo tempo contra um servidor que acabou de cair.
+Pois, imagino, que isso gere um efeito manada, causando um efeito natural de negacao por parte do servidor, visto que tem muitos acessos ao mesmo tempo.
+
+### Por que limitar o número de tentativas?
+Pois, caso haja um numero alto de tentativas erradas, isso vai tornar o servidor indisponivel. Logo, para evitar que sobrecarregue um servidor indisponivel, eh necessario um limite de tentativas, para evitar o sobrecarregamento.
