@@ -1,17 +1,24 @@
 import os
+import time
 from typing import Any
 
 import requests
 from dotenv import load_dotenv
 
-import time
+
+class LimiteTentativasError(Exception):
+    pass
 
 MAX_TRIES = 5
 TEMPO_BASE = 1
 
-def try_and_retry(endpoint: str, headers: dict[str, Any], params: dict[str, Any], timeout: int, cursor: int | None = None) -> dict[str, Any]:
+def try_and_retry(endpoint: str, headers: dict[str, Any], params: dict[str, Any], timeout: int, cursor: int | None = None) -> requests.Response:
     
     tentativas = 0
+    excecoes = (requests.exceptions.Timeout, requests.exceptions.ConnectionError)
+
+    d = params.copy()
+    if cursor is not None: d['cursor'] = cursor
     
     while tentativas < MAX_TRIES:
         print(f"Tentativa numero {tentativas+1}")
@@ -19,9 +26,9 @@ def try_and_retry(endpoint: str, headers: dict[str, Any], params: dict[str, Any]
         backoff: int = TEMPO_BASE * (2**tentativas)
 
         try:    
-            r = requests.get(url=endpoint, headers=headers, params=params, timeout=timeout) #se der erro de timout, essa propria linha vai lancar a excecao
+            r = requests.get(url=endpoint, headers=headers, params=d, timeout=timeout) #se der erro de timout, essa propria linha vai lancar a excecao
         
-        except requests.exceptions.ConnectTimeoutError or requests.exceptions.ConnectionError:
+        except excecoes: #nao se usa or em except, pois nesse caso ele captura apenas a primeira excecao
             time.sleep(backoff)
             tentativas+=1
             continue
@@ -33,8 +40,13 @@ def try_and_retry(endpoint: str, headers: dict[str, Any], params: dict[str, Any]
             # print(r.text)
             # print(r.headers)
             # print(r.content)
-            print(f"Tempo a se esperar pos 429: {int(r.headers['retry-after'])}")
-            espera = int(r.headers['retry-after'])
+            sec = r.headers.get('retry-after')
+            if sec is not None:
+                espera: int = int(sec)
+            else:
+                espera = backoff
+            
+            print(f"Tempo a se esperar pos 429: {espera}")
             time.sleep(espera)
             tentativas+=1
         
@@ -46,26 +58,23 @@ def try_and_retry(endpoint: str, headers: dict[str, Any], params: dict[str, Any]
             r.raise_for_status() #essa linha vai lancar a excecao quando a linha de get (ou qualquer outra requisicao) retornou uma resposta, mas com status de erro
 
         else:
-            break
+            return r
         
-    return r
+    raise LimiteTentativasError("Numero maximo de tentativas estourado!")
 
 def get_page(endpoint: str, params: dict[str, Any], cursor: int | None = None) -> dict[str, Any]:
 
     load_dotenv()
     api_key = os.getenv(key="BALLDONTLIE_API_KEY")
-    if api_key == None: raise requests.exceptions.HTTPError("Chave da API não foi encontrada!")
+    if api_key is None: raise RuntimeError("Chave da API não foi encontrada!")
 
     headers={"Authorization": api_key}
 
     url = f"https://api.balldontlie.io/v1/{endpoint}"
-    
-    d = params
-    if cursor is not None: d['cursor'] = cursor
 
     timeout = 5
 
-    r = try_and_retry(endpoint=url, headers=headers, params=d, timeout=timeout, cursor=cursor)
+    r = try_and_retry(endpoint=url, headers=headers, params=params, timeout=timeout, cursor=cursor)
     
     data: dict[str, Any] = r.json()
     return data
