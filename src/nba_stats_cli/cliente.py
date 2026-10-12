@@ -15,6 +15,7 @@ TEMPO_BASE = 1
 def try_and_retry(endpoint: str, headers: dict[str, Any], params: dict[str, Any], timeout: int, cursor: int | None = None) -> requests.Response:
     
     tentativas = 0
+    status : int = 0
     excecoes = (requests.exceptions.Timeout, requests.exceptions.ConnectionError)
 
     d = params.copy()
@@ -29,12 +30,13 @@ def try_and_retry(endpoint: str, headers: dict[str, Any], params: dict[str, Any]
             r = requests.get(url=endpoint, headers=headers, params=d, timeout=timeout) #se der erro de timout, essa propria linha vai lancar a excecao
         
         except excecoes: #nao se usa or em except, pois nesse caso ele captura apenas a primeira excecao
+            status = r.status_code
             time.sleep(backoff)
             tentativas+=1
             continue
         
         print(f"Status: {r.status_code}, Tipo: {type(r.status_code)}")
-        status : int = r.status_code
+        status = r.status_code
     
         if status == 429:
             # print(r.text)
@@ -60,7 +62,7 @@ def try_and_retry(endpoint: str, headers: dict[str, Any], params: dict[str, Any]
         else:
             return r
         
-    raise LimiteTentativasError("Numero maximo de tentativas estourado!")
+    raise LimiteTentativasError("Numero maximo de tentativas estourado!") from status
 
 def get_page(endpoint: str, params: dict[str, Any], cursor: int | None = None) -> dict[str, Any]:
 
