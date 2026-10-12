@@ -7,7 +7,7 @@ Ja uma resposta http é composta pelo STATUS, que vai dizer o que aconteceu com 
 404: recurso não encontrado. Talvez algum parâmetro ou algo da linha principal foi passado errado por parte do cliente, como um id que não existe no banco de dados.
 429: requisições demais, quando o cliente ultrapassa o seu limite de requisições.
 
-O único que faz sentido tentar de novo é o 404 (após mudança do parâmetro claro), visto que no 401 o cliente não tem autorização, logo não vai conseguir de jeito nenhum, e no 429 o cliente tem que esperar as suas requisições reiniciarem.
+O codigo 429 faz sentido ser testado de novo, uma vez que, nao representa erro de codigo escrito. Logo, quando ele aparece, o desenvolvedor consegue identificar que nao eh erro do seu codigo, e sim um fator externo. Ja os outros indicam erro de codigo, e nao valem a nova tentativa.
 
 ### Quando o servidor responde 404, o requests lança uma exceção sozinho? O que você precisa fazer para que ele lance?
 Não, ele segue normal. Para que o programa seja interrompido e o desenvolvedor consiga ver onde o erro está, devemos usar o .raise_for_status() que basicamente raise exceptions em casos de bad requests (4xx e 5xx).
