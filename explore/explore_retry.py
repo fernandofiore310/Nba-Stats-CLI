@@ -10,17 +10,21 @@ if __name__ == "__main__":
     params: dict[str, Any] = {}
     c = 0
     dic = get_page(endpoint=endpoint, params=params, cursor=c)
-    print(dic)
+    # print(dic)
 
     #R2
     endpoint = "teams/645"
     params = {}
     c2 = 0
     try:
+        inicio = time.monotonic()
         dic2 = get_page(endpoint=endpoint, params=params, cursor=c2)
-        print("Erro: Excecao deveria ter sido lancada!")
+        assert False, "Uma excecao deveria ter sido lancada!"
     except requests.exceptions.HTTPError as e:
-        print(e.response)
+        fim = time.monotonic()
+        # print(e.response)
+        assert e.response.status_code == 404
+        assert (fim-inicio) < 1
 
     print("Espera 1 minuto")
     time.sleep(60)

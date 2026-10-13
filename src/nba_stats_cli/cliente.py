@@ -62,7 +62,7 @@ def try_and_retry(endpoint: str, headers: dict[str, Any], params: dict[str, Any]
         else:
             return r
         
-    raise LimiteTentativasError("Numero maximo de tentativas estourado!") from Exception
+    raise LimiteTentativasError("Numero maximo de tentativas estourado!")
 
 def get_page(endpoint: str, params: dict[str, Any], cursor: int | None = None) -> dict[str, Any]:
 
