@@ -1,6 +1,7 @@
 import time
-import requests
 from typing import Any
+
+import requests
 
 from nba_stats_cli.cliente import get_page
 
@@ -13,7 +14,7 @@ if __name__ == "__main__":
 
     #R2
     endpoint = "teams/645"
-    params: dict[str, Any] = {}
+    params = {}
     c2 = 0
     try:
         dic2 = get_page(endpoint=endpoint, params=params, cursor=c2)
@@ -29,7 +30,7 @@ if __name__ == "__main__":
     # Confere: Bateu
     # O 429 veio na sexta chamada como o esperado, esperou 60 segundos, e foi na segunda tentativa.
     endpoint = "teams/21"
-    params: dict[str, Any] = {}
+    params = {}
     c3 = 0
     i = 0
     while i < 7:
