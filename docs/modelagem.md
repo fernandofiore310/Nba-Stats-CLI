@@ -123,3 +123,12 @@ Logo, por temporada, temos 2460 jogos.
 Sem considerar playoffs, playin e a final do inseason tournament, apenas para a temporada passada (2025-2026), considerando que posso pegar 100 jogos por requisicao, teria que fazer um total de 25 requisicoes. Como tenho 5 por minuto, isso me levaria cerca de 5 minutos, apenas para pegar os jogos da temporada regular da temporada passada. Acredito que isso possa ser interessante.
 Nao sei o que fazer, caso for fazer com todos os jogos, o caso maximo eh apenas da temporada 2025-2026. Quem sabe da para pegar mais dados de outras temporadas recentes, considerando o tempo de 5 minutos para uma temporada (um pouco mais com os jogos que nao considerei).
 Nao existe uma maneira de diferenciar jogadores ativos e historicos. Existe um endpoint para pegar os ativos, mas sera necessario pagar o plano para acessa-lo. Quando tentei acessar, deu um 401 falando que nao estou autorizado.
+
+### Revisao do esquema de modelagem
+A unica alteracao que fiz foi deixar os colleges e jersey number NOT NULL, visto que jogadores da NBA sempre vao ter esses atributos, atuais e aposentados. E tambem, coloquei as pontuacoes por quartos nos jogos como NOT NULL, visto que como vou trablahar com temporadas atuais, eles sempre vem com valores.
+Eu quero trabalhar com polegadas e pounds para altura e peso, visto que essa eh a metrica da NBA. No entanto, nao sei como posso fazer para converte-los para numeros. Se bem que acredito que nao vou precisar, considerando que por conta da limitacao do endpoint de players, eu nao va mais conseguir realizar operacoes com a altura e peso dos jogadores.
+Mas, por outro lado, caso eu queira fazer uma media de altura historica (que ainda assim nao faz muito sentido) eu teria que dar um jeito de converter para numeros. A principio vou mudar para INTEGER e fazer uma conversao numerica, mas nao garanto que vou conseguir fazer analises boas com esses valores.
+
+### INSERT da minha base
+INSERT ... ON CONFLICT DO UPDATE
+Decidi usar essa, pois acredito que eh a mais tranquila para lidar com erros e problemas. Mesmoi que eu adicione um jogador com id especifico, mais dados diferentes, eh so eu rodar de novo, com os dados certos que ele ja arruma.
