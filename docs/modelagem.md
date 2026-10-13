@@ -78,7 +78,7 @@ Acredito que vou usar os mesmo ids da API. Digo isso pois, caso eu estivesse gra
 ### M4. As perguntas que o banco precisa responder
 Quais foram os times que mais fizeram pontos em uma temporada? E vitorias
 
-Qual a altura media dos jogadores dos times que mais venceram/perderam? E dos que mais/menos pontuaram?
+Qual a altura media dos jogadores dos times que mais venceram/perderam? E dos que mais/menos pontuaram? (nao sera possivel sem conseguir distiguir jogadores atuais e antigos)
 
 Evolucao de pontos ao longo dos jogos das ultimas 20 temporadas.
 
@@ -90,7 +90,7 @@ Colleges com mais jogadores atualmente.
 
 Colleges que mais tiveram picks top 5 primeiro round.
 
-Dos jogadores atuais, quantos sao de cada classe de draft?
+Dos jogadores atuais, quantos sao de cada classe de draft? (nao sera possivel sem conseguir distiguir jogadores atuais e antigos)
 
 Quais conferencias venceram mais jogos nos ultimos 10/25 anos? E divisoes?
 
@@ -104,7 +104,7 @@ Jogar dentro de casa faz a diferenca nos playoffs? Calcular o aproveitamento dos
 ## Análise dos dados da API
 
 ### Como diferenciar apenas os times da NBA
-Como foi visto, a base de dados possui 89 times. No entanto, caso voce printe cada um desses times (como fiz no explore/explore_modelo.py) é possível notar que os primeiros 30 times do endpoint teams são exatamente os times da NBA.
+Como foi visto, a base de dados possui 89 times. No entanto, caso voce printe cada um desses times (como fiz no explore/explore_modelo.py) é possível notar que os primeiros 30 times do endpoint teams são exatamente os times da NBA. Logo, vou pegar os times que possuem os ids de 1 a 30.
 
 ### Quais jogadores entram
 Como dito anteriormente, queria dar um jeito de pegar apenas jogadores atuais, e que jogam na NBA. Entao, o que fiz foi primeiro passar uma lista no params, com os ids de times de 1 a 30, ja que sabemos que esses sao os times da nba. O problema era diferenciar jogadores atuais e antigos. Percebi, brincando com a API, que jogadores que ja se aposentaram, possuem como time, o ultimo time que jogaram. Testei com Darren Collison, e realmente chequei na internet, seu ultimo time foi o Lakers.
@@ -120,5 +120,6 @@ Rodei para os jogadores de id 600-605 e vieram apenas jogadores antigos. Depois 
 ### Quais temporadas escolher
 Considerando que, nas temporadas mais atuais, tem 30 times na NBA, e tirando os anos de 2019-2020 e 2011-2012 que tiveram menos jogos, cada time joga 82 jogos (vou considerar apenas temporada regular)
 Logo, por temporada, temos 2460 jogos.
-Sem considerar playoffs, playin e a final do inseason tournament, apenas para a temporada passada (2025-2026), considerando que posso pegar 100 jogos por requisicao, teria que fazer um total de 246 requisicoes. Como tenho 5 por minuto, isso me levaria cerca de 49 minutos e 12 segundos, apenas para pegar os jogos da temporada regular da temporada passada. Realmente eh muita coisa.
-Nao sei o que fazer, caso for fazer com todos os jogos, o caso maximo eh apenas da temporada 2025-2026.
+Sem considerar playoffs, playin e a final do inseason tournament, apenas para a temporada passada (2025-2026), considerando que posso pegar 100 jogos por requisicao, teria que fazer um total de 25 requisicoes. Como tenho 5 por minuto, isso me levaria cerca de 5 minutos, apenas para pegar os jogos da temporada regular da temporada passada. Acredito que isso possa ser interessante.
+Nao sei o que fazer, caso for fazer com todos os jogos, o caso maximo eh apenas da temporada 2025-2026. Quem sabe da para pegar mais dados de outras temporadas recentes, considerando o tempo de 5 minutos para uma temporada (um pouco mais com os jogos que nao considerei).
+Nao existe uma maneira de diferenciar jogadores ativos e historicos. Existe um endpoint para pegar os ativos, mas sera necessario pagar o plano para acessa-lo. Quando tentei acessar, deu um 401 falando que nao estou autorizado.
