@@ -1,33 +1,40 @@
 from typing import Any
 
+# Arquivo responsavel pela criacao de tuplas a serem usadas no sql, alem de funcoes de conversao de dados da API para a nossa base de dados.
 
-def calc_weight(weight: str) -> int:
-    w: float = float(int(weight))
+def calc_weight(weight: str | None) -> int | None:
+    if weight is None:
+        return None
+    
+    w: float = float(weight)
     w = w*0.453592
-    return int(w)
+    return round(w)
 
-def calc_height(height: str) -> int:
+def calc_height(height: str | None) -> int | None:
+    if height is None:
+        return None
+    
     lh = height.split('-')
-    feet = float(int(lh[0]))
-    inch = float(int(lh[1]))
-    # print(feet)
-    # print(inch)
+    feet = float(lh[0])
+    inch = float(lh[1])
     h = feet*12 + inch
     h = h * 2.54
-    return int(h)
+    return round(h)
 
 def team_params(dic: dict[str, Any]) -> tuple[int, str, str, str, str, str, str]:
-    tupla = (dic['id'], 
-            dic['conference'], 
-            dic['division'],
-            dic['city'],
-            dic['name'],
-            dic['full_name'],
-            dic['abbreviation'] 
+    team = dic['team']
+    
+    tupla = (team['id'], 
+            team['conference'], 
+            team['division'],
+            team['city'],
+            team['name'],
+            team['full_name'],
+            team['abbreviation'] 
             )
     return tupla
 
-def player_params(dic: dict[str, Any]) -> tuple[int, str, str, str, int, int, str, str, str, int | None, int | None, int | None, int]:
+def player_params(dic: dict[str, Any]) -> tuple[int, str, str, str, int | None, int | None, str | None, str | None, str, int | None, int | None, int | None, int]:
 
     weight = calc_weight(dic['weight'])
     team_id = dic['team']['id']
