@@ -127,7 +127,7 @@ Nao existe uma maneira de diferenciar jogadores ativos e historicos. Existe um e
 ### Revisao do esquema de modelagem
 A unica alteracao que fiz foi deixar os colleges e jersey number NOT NULL, visto que jogadores da NBA sempre vao ter esses atributos, atuais e aposentados. E tambem, coloquei as pontuacoes por quartos nos jogos como NOT NULL, visto que como vou trablahar com temporadas atuais, eles sempre vem com valores.
 Eu quero trabalhar com polegadas e pounds para altura e peso, visto que essa eh a metrica da NBA. No entanto, nao sei como posso fazer para converte-los para numeros. Se bem que acredito que nao vou precisar, considerando que por conta da limitacao do endpoint de players, eu nao va mais conseguir realizar operacoes com a altura e peso dos jogadores.
-Mas, por outro lado, caso eu queira fazer uma media de altura historica (que ainda assim nao faz muito sentido) eu teria que dar um jeito de converter para numeros. A principio vou mudar para INTEGER e fazer uma conversao numerica, mas nao garanto que vou conseguir fazer analises boas com esses valores.
+Mas, por outro lado, caso eu queira fazer uma media de altura historica (que ainda assim nao faz muito sentido) eu teria que dar um jeito de converter para numeros. A principio vou mudar para INTEGER e fazer uma conversao numerica, mas nao garanto que vou conseguir fazer analises boas com esses valores. Alem disso, a altura ficara em cm e o peso em kg
 
 ### INSERT da minha base
 INSERT ... ON CONFLICT DO UPDATE
