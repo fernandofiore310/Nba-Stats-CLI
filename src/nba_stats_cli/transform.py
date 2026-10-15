@@ -21,9 +21,7 @@ def calc_height(height: str | None) -> int | None:
     h = h * 2.54
     return round(h)
 
-def team_params(dic: dict[str, Any]) -> tuple[int, str, str, str, str, str, str]:
-    team = dic['team']
-    
+def team_params(team: dict[str, Any]) -> tuple[int, str, str, str, str, str, str]:
     tupla = (team['id'], 
             team['conference'], 
             team['division'],

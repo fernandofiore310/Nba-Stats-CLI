@@ -24,6 +24,6 @@ if __name__ == "__main__":
     assert peso == 104
     assert peso2 is None
 
-    assert team_params(tatum) == (2, 'East', 'Atlantic', 'Boston', 'Celtics', 'Boston Celtics', 'BOS')
+    assert team_params(tatum['team']) == (2, 'East', 'Atlantic', 'Boston', 'Celtics', 'Boston Celtics', 'BOS')
     
     assert player_params(tatum) == (434, 'Jayson', 'Tatum', 'F', 203, 104, '0', 'Duke', 'USA', 2017, 1, 3, 2)

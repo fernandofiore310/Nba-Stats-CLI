@@ -131,4 +131,4 @@ Mas, por outro lado, caso eu queira fazer uma media de altura historica (que ain
 
 ### INSERT da minha base
 INSERT ... ON CONFLICT DO UPDATE
-Decidi usar essa, pois acredito que eh a mais tranquila para lidar com erros e problemas. Mesmoi que eu adicione um jogador com id especifico, mais dados diferentes, eh so eu rodar de novo, com os dados certos que ele ja arruma.
+Decidi usar essa, pois acredito que eh a mais tranquila para lidar com erros e problemas. Mesmo que eu adicione um jogador com id especifico, mas dados diferentes, eh so eu rodar de novo, com os dados certos que ele ja arruma.
