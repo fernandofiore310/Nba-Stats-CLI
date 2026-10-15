@@ -1,5 +1,5 @@
-from nba_stats_cli.db import connect, record_teams
 from nba_stats_cli.cliente import get_page
+from nba_stats_cli.db import connect, record_teams
 from nba_stats_cli.transform import team_params
 
 if __name__ == "__main__":

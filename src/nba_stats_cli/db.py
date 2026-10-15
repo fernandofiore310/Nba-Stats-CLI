@@ -1,6 +1,5 @@
 import sqlite3
-from sqlite3 import Cursor, Connection
-from typing import List
+from sqlite3 import Connection, Cursor
 
 BANCO = "data/nba.db"
 
@@ -18,7 +17,7 @@ def connect() -> Connection:
 def create_cursor(conn: Connection) -> Cursor:
     return conn.cursor()
 
-def record_teams(conn: Connection, teams: list[tuple]) -> None:
+def record_teams(conn: Connection, teams: list[tuple[int, str, str, str, str, str, str]]) -> None:
     cursor = create_cursor(conn)
     
     try:
@@ -40,7 +39,7 @@ def record_teams(conn: Connection, teams: list[tuple]) -> None:
 
         conn.commit()
 
-    except sqlite3.Error as e:
+    except sqlite3.Error:
         print("Insercao nao deu certo!")
         conn.rollback()
-        raise e
+        raise

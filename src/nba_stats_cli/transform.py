@@ -53,3 +53,34 @@ def player_params(dic: dict[str, Any]) -> tuple[int, str, str, str, int | None, 
             team_id
             )
     return tupla
+
+def games_params(dic: dict[str, Any]) -> tuple[int, str, int, bool, bool, int, int, int, int, int, int, int | None, int | None, int | None, int, int, int, int, int | None, int | None, int | None, str | None, int, int]:
+    home_team_id = dic['home_team']['id']
+    visitor_team_id = dic['visitor_team']['id']
+    
+    tupla = (dic['id'], 
+            dic['date'], 
+            dic['season'],
+            dic['postseason'],
+            dic['postponed'],
+            dic['home_team_score'],
+            dic['visitor_team_score'],
+            dic['home_q1'],
+            dic['home_q2'],
+            dic['home_q3'],
+            dic['home_q4'],
+            dic['home_ot1'],
+            dic['home_ot2'],
+            dic['home_ot3'],
+            dic['visitor_q1'],
+            dic['visitor_q2'],
+            dic['visitor_q3'],
+            dic['visitor_q4'],
+            dic['visitor_ot1'],
+            dic['visitor_ot2'],
+            dic['visitor_ot3'],
+            dic['ist_stage'],
+            home_team_id,
+            visitor_team_id
+            )
+    return tupla

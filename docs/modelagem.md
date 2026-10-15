@@ -132,3 +132,4 @@ Mas, por outro lado, caso eu queira fazer uma media de altura historica (que ain
 ### INSERT da minha base
 INSERT ... ON CONFLICT DO UPDATE
 Decidi usar essa, pois acredito que eh a mais tranquila para lidar com erros e problemas. Mesmo que eu adicione um jogador com id especifico, mas dados diferentes, eh so eu rodar de novo, com os dados certos que ele ja arruma.
+E isso serve para o caso de insert dos jogos. Por exemplo, quando for inserir os jogos na tabela, vou fazer o mesmo try catch e usar o ON CONFLICT, de modo que, caso a extracao caia na segunda pagina por exemplo, eu rodo de novo, e se der certo, vai apenas atualizar as colunas das linhas que ja estavam na base.

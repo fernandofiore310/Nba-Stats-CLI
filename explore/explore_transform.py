@@ -1,6 +1,11 @@
-from typing import Any
 
-from nba_stats_cli.transform import calc_height, calc_weight, team_params, player_params
+from nba_stats_cli.transform import (
+    calc_height,
+    calc_weight,
+    games_params,
+    player_params,
+    team_params,
+)
 
 if __name__ == "__main__":
 
@@ -27,3 +32,7 @@ if __name__ == "__main__":
     assert team_params(tatum['team']) == (2, 'East', 'Atlantic', 'Boston', 'Celtics', 'Boston Celtics', 'BOS')
     
     assert player_params(tatum) == (434, 'Jayson', 'Tatum', 'F', 203, 104, '0', 'Duke', 'USA', 2017, 1, 3, 2)
+
+    dic_game = {"data": [{"id": 15907925, "date": "2025-01-05", "season": 2024, "status": "Final", "status_state": "final", "period": 4, "time": "Final", "postseason": False, "postponed": False, "home_team_score": 115, "visitor_team_score": 105, "datetime": "2025-01-05T23:00:00.000Z", "home_q1": 29, "home_q2": 34, "home_q3": 28, "home_q4": 24, "home_ot1": None, "home_ot2": None, "home_ot3": None, "home_timeouts_remaining": 2, "home_in_bonus": True, "visitor_q1": 23, "visitor_q2": 25, "visitor_q3": 30, "visitor_q4": 27, "visitor_ot1": None, "visitor_ot2": None, "visitor_ot3": None, "visitor_timeouts_remaining": 2, "visitor_in_bonus": False, "ist_stage": None, "home_team": {"id": 6, "conference": "East", "division": "Central", "city": "Cleveland", "name": "Cavaliers", "full_name": "Cleveland Cavaliers", "abbreviation": "CLE"}, "visitor_team": {"id": 4, "conference": "East", "division": "Southeast", "city": "Charlotte", "name": "Hornets", "full_name": "Charlotte Hornets", "abbreviation": "CHA"}}], "meta": {"next_cursor": 25, "per_page": 25}}
+
+    assert games_params(dic_game['data'][0]) == (15907925, "2025-01-05", 2024, False, False, 115, 105, 29, 34, 28, 24, None, None, None, 23, 25, 30, 27, None, None, None, None, 6, 4)
