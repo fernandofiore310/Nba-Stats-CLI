@@ -9,7 +9,8 @@ if __name__ == "__main__":
     d = get_page(endpoint=endpoint, params=params, cursor=c)
 
     all_teams = d['data']
-    nba_teams = all_teams[0:30]
+    nba_teams = [team for team in all_teams if team['id'] > 0 and team['id'] <= 30]
+    assert len(nba_teams) == 30
     nba_teams_tuple_list = []
 
     for t in nba_teams:

@@ -28,6 +28,7 @@ def try_and_retry(endpoint: str, headers: dict[str, Any], params: dict[str, Any]
 
         try:    
             r = requests.get(url=endpoint, headers=headers, params=d, timeout=timeout) #se der erro de timout, essa propria linha vai lancar a excecao
+            print(r.url)
         
         except excecoes: #nao se usa or em except, pois nesse caso ele captura apenas a primeira excecao
             # erro de timout nao tem status ou conexao nao tem status. Por isso tratamos eles aqui
