@@ -1,10 +1,12 @@
+from typing import Any
+
 from nba_stats_cli.cliente import get_page
-from nba_stats_cli.db import connect, record_teams, close_connection
+from nba_stats_cli.db import close_connection, connect, record_teams
 from nba_stats_cli.transform import team_params
 
 if __name__ == "__main__":
     endpoint = "teams"
-    params = {}
+    params: dict[str, Any] = {}
     c = 0
     d = get_page(endpoint=endpoint, params=params, cursor=c)
 

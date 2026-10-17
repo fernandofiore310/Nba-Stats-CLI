@@ -1,8 +1,8 @@
 import time
 
 from nba_stats_cli.cliente import get_page
+from nba_stats_cli.db import close_connection, connect, record_games
 from nba_stats_cli.transform import games_params
-from nba_stats_cli.db import connect, record_games, close_connection
 
 # Temporada 2024-2025 teve 1320 jogos, segundo o gemini. Ja 2025=2026 teve 1322. Um total de 2642 jogos.
 # Considerando que a cada request vou pegar 100 jogos, vou precisar de 27 request para pegar todos, ou seja, 27 paginas.

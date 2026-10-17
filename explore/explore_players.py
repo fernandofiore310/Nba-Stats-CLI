@@ -1,6 +1,4 @@
 from nba_stats_cli.cliente import get_page
-from nba_stats_cli.db import connect, record_teams, close_connection
-from nba_stats_cli.transform import team_params
 
 if __name__ == "__main__":
     endpoint = "players"
