@@ -1,5 +1,5 @@
 from nba_stats_cli.cliente import get_page
-from nba_stats_cli.db import connect, record_teams
+from nba_stats_cli.db import connect, record_teams, close_connection
 from nba_stats_cli.transform import team_params
 
 if __name__ == "__main__":
@@ -18,3 +18,4 @@ if __name__ == "__main__":
     
     conn = connect()
     record_teams(conn, nba_teams_tuple_list)
+    close_connection(conn=conn)
