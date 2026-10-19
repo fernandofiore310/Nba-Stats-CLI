@@ -20,3 +20,8 @@ SELECT id, full_name
 FROM teams 
 WHERE id = 2
 ;
+
+SELECT first_name, last_name, height, weight
+FROM players
+WHERE id = 434
+;

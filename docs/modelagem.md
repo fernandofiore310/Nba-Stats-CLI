@@ -125,7 +125,12 @@ Nao sei o que fazer, caso for fazer com todos os jogos, o caso maximo eh apenas 
 Nao existe uma maneira de diferenciar jogadores ativos e historicos. Existe um endpoint para pegar os ativos, mas sera necessario pagar o plano para acessa-lo. Quando tentei acessar, deu um 401 falando que nao estou autorizado.
 
 ### Revisao do esquema de modelagem
-Realizei a alteracao de colocar os campos jersey_number, college, height, weight, position e country como nulos, visto que realizei um teste e vi que existem varios jogadores na base com esses campos nulos. Alem disso, os campos de draft continuam com a possibilidade de receber valores nulos, considerando que existem jogadores undrafted e outros que nao possuem valor nessas chaves. E tambem, coloquei as pontuacoes por quartos nos jogos como NOT NULL, visto que como vou trablahar com temporadas atuais, eles sempre vem com valores.
+Realizei a alteracao de colocar os campos jersey_number, college, height, weight, position e country como nulos, visto que realizei um teste e vi que existem varios jogadores na base com esses campos nulos. Segue resultado dos testes:
+# Resultados no terminal
+    # Jogadores com campos nulos: 1314
+    # Frequencia de campos nulos:
+    # {'jersey_number': 1290, 'college': 1048, 'height': 1104, 'weight': 1112, 'country': 1096, 'position': 597}
+Alem disso, os campos de draft continuam com a possibilidade de receber valores nulos, considerando que existem jogadores undrafted e outros que nao possuem valor nessas chaves. E tambem, coloquei as pontuacoes por quartos nos jogos como NOT NULL, visto que como vou trablahar com temporadas atuais, eles sempre vem com valores.
 Eu queria trabalhar com polegadas e pounds para altura e peso, visto que essa eh a metrica da NBA. No entanto, nao sei como posso fazer para converte-los para numeros. Logo, decidi usar altura em centimetros e peso em kg, e consequentemente trocar os campos para INTEGER ao inves de TEXT.
 No entanto, ainda fico na duvida sobre o uso desses players, considerando que existem essas limitacoes do endpoint de players, alem de nao conseguir ter uma versao de jogadores por temporada.
 

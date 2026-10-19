@@ -3,7 +3,7 @@ from typing import Any
 # Arquivo responsavel pela criacao de tuplas a serem usadas no sql, alem de funcoes de conversao de dados da API para a nossa base de dados.
 
 def calc_weight(weight: str | None) -> int | None:
-    if weight is None:
+    if weight is None or weight == "" or weight == " ":
         return None
     
     w: float = float(weight)
@@ -11,7 +11,7 @@ def calc_weight(weight: str | None) -> int | None:
     return round(w)
 
 def calc_height(height: str | None) -> int | None:
-    if height is None:
+    if height is None or height == "" or height == " ":
         return None
     
     lh = height.split('-')
@@ -35,8 +35,11 @@ def team_params(team: dict[str, Any]) -> tuple[int, str, str, str, str, str, str
 def player_params(dic: dict[str, Any]) -> tuple[int, str, str, str, int | None, int | None, str | None, str | None, str, int | None, int | None, int | None, int]:
 
     weight = calc_weight(dic['weight'])
+
     team_id = dic['team']['id']
+
     height = calc_height(dic['height'])
+
 
     tupla = (dic['id'], 
             dic['first_name'], 

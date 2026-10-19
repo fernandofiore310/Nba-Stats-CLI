@@ -119,3 +119,40 @@ def record_games(conn: Connection, games: list[tuple[int, str, int, bool, bool, 
         print("Insercao nao deu certo!")
         conn.rollback()
         raise
+
+def record_players(conn: Connection, players: list[tuple[int, str, str, str | None, int | None, int | None, str | None, str | None, str | None, int | None, int | None, int | None, int]]) -> None:
+    cursor = create_cursor(conn)
+
+    try:
+        cursor.executemany(
+            """
+            INSERT INTO players (
+                id, first_name, last_name, position, height,
+                weight, jersey_number, college, country,
+                draft_year, draft_round, draft_number, team_id
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT (id)
+            DO UPDATE SET
+                first_name = EXCLUDED.first_name,
+                last_name = EXCLUDED.last_name,
+                position = EXCLUDED.position,
+                height = EXCLUDED.height,
+                weight = EXCLUDED.weight,
+                jersey_number = EXCLUDED.jersey_number,
+                college = EXCLUDED.college,
+                country = EXCLUDED.country,
+                draft_year = EXCLUDED.draft_year,
+                draft_round = EXCLUDED.draft_round,
+                draft_number = EXCLUDED.draft_number,
+                team_id = EXCLUDED.team_id;
+            """,
+            players,
+        )
+
+        conn.commit()
+
+    except sqlite3.Error:
+        print("Insercao nao deu certo!")
+        conn.rollback()
+        raise
