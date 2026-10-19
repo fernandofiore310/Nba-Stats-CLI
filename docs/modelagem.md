@@ -125,9 +125,9 @@ Nao sei o que fazer, caso for fazer com todos os jogos, o caso maximo eh apenas 
 Nao existe uma maneira de diferenciar jogadores ativos e historicos. Existe um endpoint para pegar os ativos, mas sera necessario pagar o plano para acessa-lo. Quando tentei acessar, deu um 401 falando que nao estou autorizado.
 
 ### Revisao do esquema de modelagem
-A unica alteracao que fiz foi deixar os colleges e jersey number NOT NULL, visto que jogadores da NBA sempre vao ter esses atributos, atuais e aposentados. E tambem, coloquei as pontuacoes por quartos nos jogos como NOT NULL, visto que como vou trablahar com temporadas atuais, eles sempre vem com valores.
-Eu quero trabalhar com polegadas e pounds para altura e peso, visto que essa eh a metrica da NBA. No entanto, nao sei como posso fazer para converte-los para numeros. Se bem que acredito que nao vou precisar, considerando que por conta da limitacao do endpoint de players, eu nao va mais conseguir realizar operacoes com a altura e peso dos jogadores.
-Mas, por outro lado, caso eu queira fazer uma media de altura historica (que ainda assim nao faz muito sentido) eu teria que dar um jeito de converter para numeros. A principio vou mudar para INTEGER e fazer uma conversao numerica, mas nao garanto que vou conseguir fazer analises boas com esses valores. Alem disso, a altura ficara em cm e o peso em kg
+Realizei a alteracao de colocar os campos jersey_number, college, height, weight, position e country como nulos, visto que realizei um teste e vi que existem varios jogadores na base com esses campos nulos. Alem disso, os campos de draft continuam com a possibilidade de receber valores nulos, considerando que existem jogadores undrafted e outros que nao possuem valor nessas chaves. E tambem, coloquei as pontuacoes por quartos nos jogos como NOT NULL, visto que como vou trablahar com temporadas atuais, eles sempre vem com valores.
+Eu queria trabalhar com polegadas e pounds para altura e peso, visto que essa eh a metrica da NBA. No entanto, nao sei como posso fazer para converte-los para numeros. Logo, decidi usar altura em centimetros e peso em kg, e consequentemente trocar os campos para INTEGER ao inves de TEXT.
+No entanto, ainda fico na duvida sobre o uso desses players, considerando que existem essas limitacoes do endpoint de players, alem de nao conseguir ter uma versao de jogadores por temporada.
 
 ### INSERT da minha base
 INSERT ... ON CONFLICT DO UPDATE

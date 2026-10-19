@@ -9,7 +9,7 @@ from nba_stats_cli.transform import games_params
 # Considerando que tenho 5 request por minuto, vou demorar um total aproximado de 6 minutos para pegar todos.
 if __name__ == "__main__":
     endpoint = "games"
-    params = {'per_page': 100, 'seasons': [2024, 2025]}
+    params = {'per_page': 100, 'seasons[]': [2024, 2025]}
     c = 0
     paginas = 0
     games_list = []
