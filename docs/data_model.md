@@ -136,5 +136,11 @@ No entanto, ainda fico na duvida sobre o uso desses players, considerando que ex
 
 ### INSERT da minha base
 INSERT ... ON CONFLICT DO UPDATE
-Decidi usar essa, pois acredito que eh a mais tranquila para lidar com erros e problemas. Mesmo que eu adicione um jogador com id especifico, mas dados diferentes, eh so eu rodar de novo, com os dados certos que ele ja arruma.
-E isso serve para o caso de insert dos jogos. Por exemplo, quando for inserir os jogos na tabela, vou fazer o mesmo try catch e usar o ON CONFLICT, de modo que, caso a extracao caia na segunda pagina por exemplo, eu rodo de novo, e se der certo, vai apenas atualizar as colunas das linhas que ja estavam na base.
+Decidi usar essa, pois acredito que eh a mais tranquila para lidar com erros e problemas. Mesmo que eu adicione um jogador com id especifico, mas dados diferentes, eh so eu rodar de novo, com os dados certos que ele ja arruma e eh salvo na base.
+E isso serve para o caso de insert dos jogos. Por exemplo, quando for inserir os jogos na tabela, vou fazer o mesmo try/except, de modo que, caso a extracao caia na segunda pagina por exemplo, nada vai ser salvo na base, devido ao rollback no except, evitando que a base fique incompleta ate que o desenvolvedor/usuario arrume. E usar o upsert serve para, caso ja tenha dados na base, apenas atualiza-los, sem ter que apagar tudo e preencher tudo de novo.
+
+### Problema dos query parameters que sao listas
+Estava com lidando com um problema no meu codigo: estava conseguindo pegar, no minimo, duas temporadas por get. Isso porque, estava fazendo da seguinte maneira params = {seasons: [2025]} caso quisesse pegar apenas uma temporada, o que dava erro com codigo 400. 
+O erro era que tinha que fazer params = {seasons[]: [2025]}, visto que a API que estou trabalhando usa uma convencao de colchetes no nome do parametro, de modo que ela so entende que o parametro eh uma lista caso esses colchetes sejam escritos ao lado do nome do parametro. 
+Logo, troquei tanto para o season quando estava pegando os jogos, como para os ids de times quando estava pegando os jogadores.
+No momento, a decisao da base eh trabalhar com as temporadas 2024 e 2025. Veremos caso mais temporadas devem ser adicionadas. Mas a principio, apenas serao feitas analises com as duas temporadas citadas.
