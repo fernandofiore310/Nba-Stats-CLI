@@ -1,3 +1,5 @@
+from typing import Any
+
 import pytest
 
 from nba_stats_cli.transform import (
@@ -8,7 +10,6 @@ from nba_stats_cli.transform import (
     team_params,
 )
 
-from typing import Any
 
 @pytest.fixture
 def team() -> dict[str, Any]:
@@ -45,7 +46,7 @@ def test_calc_weight(weight: str | None, expected_weight: int) -> None:
         calc_weight(weight=weight) == expected_weight
     )
 
-def test_team_params(team: dict[str, Any]) -> None:
+def test_team_params(team: dict[str, Any]) -> None: # Você passa o nome da função da fixture exatamente como o nome do argumento da sua função de teste. O pytest identifica o nome do parâmetro, executa a fixture primeiro e injeta o valor retornado por ela dentro do parâmetro do teste.
     assert team_params(team=team) == (2, 'East', 'Atlantic', 'Boston', 'Celtics', 'Boston Celtics', 'BOS')
 
 def test_player_params() -> None:

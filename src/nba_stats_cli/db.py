@@ -1,10 +1,9 @@
 import sqlite3
 from sqlite3 import Connection, Cursor
 
-BANCO = "data/nba.db"
 
-def connect() -> Connection:
-    conn = sqlite3.connect(BANCO)
+def connect(db_path: str = "data/nba.db") -> Connection:
+    conn = sqlite3.connect(db_path)
     conn.execute("PRAGMA foreign_keys = ON")
 
     with open("sql/schema.sql", "r", encoding="utf-8") as f:
