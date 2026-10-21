@@ -32,7 +32,7 @@ def team_params(team: dict[str, Any]) -> tuple[int, str, str, str, str, str, str
             )
     return tupla
 
-def player_params(dic: dict[str, Any]) -> tuple[int, str, str, str, int | None, int | None, str | None, str | None, str, int | None, int | None, int | None, int]:
+def player_params(dic: dict[str, Any]) -> tuple[int, str, str, str, int | None, int | None, str | None, str | None, str | None, int | None, int | None, int | None, int]:
 
     weight = calc_weight(dic['weight'])
 
