@@ -3,7 +3,7 @@ from typing import Any
 # Arquivo responsavel pela criacao de tuplas a serem usadas no sql, alem de funcoes de conversao de dados da API para a nossa base de dados.
 
 def calc_weight(weight: str | None) -> int | None:
-    if weight is None or weight == "" or weight == " ":
+    if weight is None or weight.strip() == "":
         return None
     
     w: float = float(weight)
@@ -11,7 +11,7 @@ def calc_weight(weight: str | None) -> int | None:
     return round(w)
 
 def calc_height(height: str | None) -> int | None:
-    if height is None or height == "" or height == " ":
+    if height is None or height.strip() == "":
         return None
     
     lh = height.split('-')

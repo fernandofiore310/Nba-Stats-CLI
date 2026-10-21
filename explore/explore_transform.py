@@ -19,15 +19,23 @@ if __name__ == "__main__":
     altura2 = calc_height("7-0")
     altura3 = calc_height("6-11")
     altura4 = calc_height(None)
+    altura5 = calc_height(" ")
+    altura6 = calc_height("\t")
     assert altura == 203
     assert altura2 == 213
     assert altura3 == 211
     assert altura4 is None
+    assert altura5 is None
+    assert altura6 is None
 
     peso = calc_weight(tatum['weight'])
     peso2 = calc_weight(None)
+    peso3 = calc_weight(" ")
+    peso4 = calc_weight("\t")
     assert peso == 104
     assert peso2 is None
+    assert peso3 is None
+    assert peso4 is None
 
     assert team_params(tatum['team']) == (2, 'East', 'Atlantic', 'Boston', 'Celtics', 'Boston Celtics', 'BOS')
     
