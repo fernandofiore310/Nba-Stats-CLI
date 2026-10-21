@@ -1,7 +1,7 @@
 import time
 from typing import Any
 
-from nba_stats_cli.cliente import get_page
+from nba_stats_cli.client import get_page
 
 
 def printa_players(data: list[dict[str, Any]], n: int) -> None:

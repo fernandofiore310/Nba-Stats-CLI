@@ -1,6 +1,6 @@
 import time
 
-from nba_stats_cli.cliente import get_page
+from nba_stats_cli.client import get_page
 from nba_stats_cli.db import close_connection, connect, record_games
 from nba_stats_cli.transform import games_params
 

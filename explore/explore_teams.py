@@ -1,6 +1,6 @@
 from typing import Any
 
-from nba_stats_cli.cliente import get_page
+from nba_stats_cli.client import get_page
 from nba_stats_cli.db import close_connection, connect, record_teams
 from nba_stats_cli.transform import team_params
 

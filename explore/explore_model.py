@@ -1,6 +1,6 @@
 from typing import Any
 
-from nba_stats_cli.cliente import get_page
+from nba_stats_cli.client import get_page
 
 if __name__ == "__main__":
     # endpoint = "teams"
