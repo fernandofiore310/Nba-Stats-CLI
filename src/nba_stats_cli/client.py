@@ -8,12 +8,12 @@ from dotenv import load_dotenv
 
 class ClientProtocol(Protocol):
 
-    def get_data(self, endpoint: str, params: dict[str, Any], cursor: int | None = None) -> dict[str, Any]:
+    def get_data(self, endpoint: str, params: dict[str, Any], cursor: int) -> dict[str, Any]:
         ...
 
 class Client:
 
-    def get_data(self, endpoint: str, params: dict[str, Any], cursor: int | None = None) -> dict[str, Any]:
+    def get_data(self, endpoint: str, params: dict[str, Any], cursor: int) -> dict[str, Any]:
         data = get_page(endpoint=endpoint, params=params, cursor=cursor)
         return data
 

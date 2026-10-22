@@ -1,8 +1,7 @@
 import time
 
 from nba_stats_cli.client import Client
-from nba_stats_cli.db import close_connection, connect, record_games
-from nba_stats_cli.transform import games_params
+from nba_stats_cli.db import close_connection, connect
 from nba_stats_cli.load import load_games
 
 # Temporada 2024-2025 teve 1320 jogos, segundo o gemini. Ja 2025=2026 teve 1322. Um total de 2642 jogos.

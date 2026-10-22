@@ -1,16 +1,14 @@
-import pytest
-
-from typing import Any
 
 from sqlite3 import Connection
-
-from nba_stats_cli.load import load_teams, load_games
+from typing import Any
 
 from nba_stats_cli.db import create_cursor
+from nba_stats_cli.load import load_games, load_players, load_teams
+
 
 class FakeClientTeams:
 
-    def get_data(self, endpoint: str, params: dict[str, Any], cursor: int | None = None) -> dict[str, Any]:
+    def get_data(self, endpoint: str, params: dict[str, Any], cursor: int) -> dict[str, Any]:
         d = {'data': [
         {
             'id': 18,
@@ -71,13 +69,13 @@ class FakeClientTeams:
 
 class FakeClientGames:
 
-    def __init__(self):
-        self.c_list: list[int] = []
+    def __init__(self) -> None:
+        self.c_list: list[int | None] = []
 
-    def get_data(self, endpoint: str, params: dict[str, Any], cursor: int | None = None) -> dict[str, Any]:
+    def get_data(self, endpoint: str, params: dict[str, Any], cursor: int) -> dict[str, Any]:
         self.c_list.append(cursor)
 
-        d = {0: {'data': [
+        d: dict[int, dict[str, Any]] = {0: {'data': [
         {
             "id": 0,
             "date": "2025-01-10",
@@ -181,8 +179,7 @@ class FakeClientGames:
             },
         },
     ], 'meta': {
-        'next_cursor': 2,
-        'per_page': 1
+        'next_cursor': 2
         }
     },
     2: {'data': [
@@ -238,11 +235,153 @@ class FakeClientGames:
             },
         }
     ], 'meta': {
-        'next_cursor': None,
-        'per_page': None
         }
     }
 }
+        return d[cursor]
+
+class FakeClientPlayers:
+
+    def __init__(self) -> None:
+        self.c_list: list[int | None] = []
+
+    def get_data(self, endpoint: str, params: dict[str, Any], cursor: int) -> dict[str, Any]:
+        self.c_list.append(cursor)
+        
+        d: dict[int, dict[str, Any]] = {0: {
+        'data': [
+            {
+            'id': 101,
+            'first_name': 'Anthony',
+            'last_name': 'Edwards',
+            'position': 'G',
+            'height': '6-4',
+            'weight': '225',
+            'jersey_number': '5',
+            'college': 'Georgia',
+            'country': 'USA',
+            'draft_year': 2020,
+            'draft_round': 1,
+            'draft_number': 1,
+            'team': {
+                'id': 18,
+                'conference': 'West',
+                'division': 'Northwest',
+                'city': 'Minnesota',
+                'name': 'Timberwolves',
+                'full_name': 'Minnesota Timberwolves',
+                'abbreviation': 'MIN',
+            },
+        },
+        {
+            'id': 102,
+            'first_name': 'Zion',
+            'last_name': 'Williamson',
+            'position': 'F',
+            'height': '6-6',
+            'weight': '284',
+            'jersey_number': '1',
+            'college': 'Duke',
+            'country': 'USA',
+            'draft_year': 2019,
+            'draft_round': 1,
+            'draft_number': 1,
+            'team': {
+                'id': 19,
+                'conference': 'West',
+                'division': 'Southwest',
+                'city': 'New Orleans',
+                'name': 'Pelicans',
+                'full_name': 'New Orleans Pelicans',
+                'abbreviation': 'NOP',
+            },
+        }],
+        'meta': {
+                'next_cursor': 2
+                }
+        },
+        2: {
+        'data': [
+            {
+            'id': 103,
+            'first_name': 'Jalen',
+            'last_name': 'Brunson',
+            'position': 'G',
+            'height': '6-2',
+            'weight': '190',
+            'jersey_number': '11',
+            'college': 'Villanova',
+            'country': 'USA',
+            'draft_year': 2018,
+            'draft_round': 2,
+            'draft_number': 33,
+            'team': {
+                'id': 20,
+                'conference': 'East',
+                'division': 'Atlantic',
+                'city': 'New York',
+                'name': 'Knicks',
+                'full_name': 'New York Knicks',
+                'abbreviation': 'NYK',
+            },
+        },
+        {
+            'id': 104,
+            'first_name': 'Shai',
+            'last_name': 'Gilgeous-Alexander',
+            'position': 'G',
+            'height': '6-6',
+            'weight': '195',
+            'jersey_number': '2',
+            'college': 'Kentucky',
+            'country': 'Canada',
+            'draft_year': 2018,
+            'draft_round': 1,
+            'draft_number': 11,
+            'team': {
+                'id': 21,
+                'conference': 'West',
+                'division': 'Northwest',
+                'city': 'Oklahoma City',
+                'name': 'Thunder',
+                'full_name': 'Oklahoma City Thunder',
+                'abbreviation': 'OKC',
+            },
+        }],
+            'meta': {
+                    'next_cursor': 4
+                    }
+            },
+        4: {
+        'data': [
+            {
+            'id': 105,
+            'first_name': 'Paolo',
+            'last_name': 'Banchero',
+            'position': 'F',
+            'height': '',
+            'weight': ' ',
+            'jersey_number': '5',
+            'college': 'Duke',
+            'country': 'USA',
+            'draft_year': 2022,
+            'draft_round': 1,
+            'draft_number': 1,
+            'team': {
+                'id': 22,
+                'conference': 'East',
+                'division': 'Southeast',
+                'city': 'Orlando',
+                'name': 'Magic',
+                'full_name': 'Orlando Magic',
+                'abbreviation': 'ORL',
+            },
+        },
+        ],
+        'meta': {
+        }
+    }
+    }
         return d[cursor]
 
 def test_load_teams(conn_memory: Connection) -> None:
@@ -276,3 +415,21 @@ def test_load_games(conn_memory: Connection) -> None:
     cur = create_cursor(conn=conn_memory)
     res = cur.execute("SELECT COUNT(*) FROM games")
     assert res.fetchone()[0] == 3
+
+def test_load_players(conn_memory: Connection) -> None:
+    client_t = FakeClientTeams()
+    client_p = FakeClientPlayers()
+
+    load_teams(conn=conn_memory, client=client_t)
+    load_players(conn=conn_memory, client=client_p)
+    assert client_p.c_list == [0,2,4]
+    
+    cur = create_cursor(conn=conn_memory)
+    res = cur.execute("SELECT COUNT(*) FROM players")
+    assert res.fetchone()[0] == 5
+
+    load_players(conn=conn_memory, client=client_p)
+
+    cur = create_cursor(conn=conn_memory)
+    res = cur.execute("SELECT COUNT(*) FROM players")
+    assert res.fetchone()[0] == 5

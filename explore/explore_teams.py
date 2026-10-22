@@ -1,5 +1,5 @@
-from nba_stats_cli.db import close_connection, connect
 from nba_stats_cli.client import Client
+from nba_stats_cli.db import close_connection, connect
 from nba_stats_cli.load import load_teams
 
 if __name__ == "__main__":

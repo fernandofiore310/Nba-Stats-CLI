@@ -1,8 +1,10 @@
-from typing import Any
 from sqlite3 import Connection
+from typing import Any
+
 from nba_stats_cli.client import ClientProtocol
-from nba_stats_cli.db import record_teams, record_games, record_players
-from nba_stats_cli.transform import team_params, games_params, player_params
+from nba_stats_cli.db import record_games, record_players, record_teams
+from nba_stats_cli.transform import games_params, player_params, team_params
+
 
 def load_teams(conn: Connection, client: ClientProtocol) -> int:
     endpoint = "teams"
@@ -44,3 +46,26 @@ def load_games(conn: Connection, client: ClientProtocol, seasons: list[int]) -> 
         paginas+=1
 
     record_games(conn=conn, games=games_list)
+
+def load_players(conn: Connection, client: ClientProtocol) -> None:
+    endpoint = "players"
+    team_ids = list(range(1, 31))
+    params = {'per_page': 100, 'team_ids[]': team_ids}
+    c = 0
+
+    page = 0
+    players_tuples_list = []
+
+    while c is not None:
+        d = client.get_data(endpoint=endpoint, params=params, cursor=c)
+        all_players = d['data']
+        for player in all_players:
+            p = player_params(player)
+            players_tuples_list.append(p)
+
+        meta = d['meta']
+        c = meta.get('next_cursor')
+        print(f"Next_Cursor: {c}")
+        page += 1
+
+    record_players(conn=conn, players=players_tuples_list)
