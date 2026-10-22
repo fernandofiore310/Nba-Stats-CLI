@@ -4,7 +4,7 @@ from nba_stats_cli.client import get_page, ClientProtocol
 from nba_stats_cli.db import close_connection, connect, record_teams
 from nba_stats_cli.transform import team_params
 
-def load_teams(client: ClientProtocol, conn: Connection) -> int:
+def load_teams(conn: Connection, client: ClientProtocol) -> int:
     endpoint = "teams"
     params: dict[str, Any] = {}
     c = 0
