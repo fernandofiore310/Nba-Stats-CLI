@@ -1,8 +1,8 @@
-from typing import Any, Protocol
-from sqlite3 import Connection, Cursor
-from nba_stats_cli.client import get_page, ClientProtocol
-from nba_stats_cli.db import close_connection, connect, record_teams
-from nba_stats_cli.transform import team_params
+from typing import Any
+from sqlite3 import Connection
+from nba_stats_cli.client import ClientProtocol
+from nba_stats_cli.db import record_teams, record_games, record_players
+from nba_stats_cli.transform import team_params, games_params, player_params
 
 def load_teams(conn: Connection, client: ClientProtocol) -> int:
     endpoint = "teams"
@@ -22,3 +22,25 @@ def load_teams(conn: Connection, client: ClientProtocol) -> int:
 
     number_of_teams = len(nba_teams_tuple_list)
     return number_of_teams
+
+def load_games(conn: Connection, client: ClientProtocol, seasons: list[int]) -> None:
+    endpoint = "games"
+    params = {'per_page': 100, 'seasons[]': seasons}
+    c = 0
+
+    paginas = 0
+    games_list = []
+
+    while c is not None:
+        d = client.get_data(endpoint=endpoint, params=params, cursor=c)
+
+        games = d['data']
+        for g in games:
+            game = games_params(g)
+            games_list.append(game)
+
+        meta = d['meta']
+        c = meta.get('next_cursor')
+        paginas+=1
+
+    record_games(conn=conn, games=games_list)

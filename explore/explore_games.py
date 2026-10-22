@@ -1,43 +1,26 @@
 import time
 
-from nba_stats_cli.client import get_page
+from nba_stats_cli.client import Client
 from nba_stats_cli.db import close_connection, connect, record_games
 from nba_stats_cli.transform import games_params
+from nba_stats_cli.load import load_games
 
 # Temporada 2024-2025 teve 1320 jogos, segundo o gemini. Ja 2025=2026 teve 1322. Um total de 2642 jogos.
 # Considerando que a cada request vou pegar 100 jogos, vou precisar de 27 request para pegar todos, ou seja, 27 paginas.
 # Considerando que tenho 5 request por minuto, vou demorar um total aproximado de 6 minutos para pegar todos.
+
 if __name__ == "__main__":
-    endpoint = "games"
-    params = {'per_page': 100, 'seasons[]': [2024, 2025]}
-    c = 0
-    paginas = 0
-    games_list = []
+    conn = connect()
+    client = Client()
+    seasons = [2024, 2025]
 
     inicio = time.monotonic()
-    while c is not None:
-        d = get_page(endpoint=endpoint, params=params, cursor=c)
-
-        games = d['data']
-        for g in games:
-            game = games_params(g)
-            games_list.append(game)
-
-        meta = d['meta']
-        c = meta.get('next_cursor')
-        print(f"Next_Cursor: {c}")
-        paginas+=1
-        
+    load_games(conn=conn, client=client, seasons=seasons)
     fim = time.monotonic()
     print(f"Tempo total: {fim-inicio}s")
-    print(f"Numero de jogos: {len(games_list)}")
-    print(f"Numero de paginas: {paginas}")
 
-    conn = connect()
-    record_games(conn=conn, games=games_list)
     close_connection(conn=conn)
         
-
 # Tempo total: 304.47313172400027s
 # Numero de jogos: 2643
 # Esses foram os resultados dos prints do terminal. O tempo ficou quase um minuto abaixo do que eu esperava.
