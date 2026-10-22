@@ -4,6 +4,7 @@ import pytest
 
 from nba_stats_cli.db import create_cursor, record_teams
 
+
 @pytest.fixture
 def teams_list() -> list[tuple[int, str, str, str, str, str, str]]:
     teams_list = [(2, 'East', 'Atlantic', 'Boston', 'Celtics', 'Boston Celtics', 'BOS'), (4, 'East', 'Southeast', 'Charlotte', 'Hornets', 'Charlotte Hornets', 'CHA'), (6, 'East', 'Southeast', 'Cleveland', 'Cavaliers', 'Cleveland Cavaliers', 'CLE')]

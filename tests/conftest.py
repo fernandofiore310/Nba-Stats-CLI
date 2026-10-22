@@ -1,8 +1,10 @@
-import pytest
-from nba_stats_cli.db import connect, create_cursor, record_teams
-
+from collections.abc import Iterator
 from sqlite3 import Connection
-from typing import Iterator
+
+import pytest
+
+from nba_stats_cli.db import connect
+
 
 @pytest.fixture
 def conn_memory() -> Iterator[Connection]:
