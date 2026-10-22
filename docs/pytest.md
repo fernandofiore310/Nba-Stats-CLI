@@ -9,3 +9,6 @@ Para rodar um unico arquivo de teste, eh so passar, ao lado do pytest na linha d
 
 ### O que o @pytest.mark.parametrize faz? Que erro você cometeu com ele na Fase 0? A resposta está no briefing, em “Expectativa derivada do código”
 O parametrize permite que uma funcao seja testada com varios inputs diferentes. Eh um modo mais rapido e pratico para testar possibilidades e casos diferentes para uma mesma funcao. O erro que cometi nele na fase 0 foi que nao sabia que a funcao que queremos testar e seu respectivo assert tinham que ficar "colados" no parametrize, de modo que ficam logo em seguida da declaracao do parametrize.
+
+### O que faz o @pytest.fixture?
+O pytest lê o nome dos parâmetros da função de teste e procura uma fixture com o mesmo nome. Se encontrar, roda a fixture e entrega o resultado nesse parâmetro. Ela não é uma variável compartilhada, ou seja, cada função de teste recebe o resultado de uma execução nova da fixture.

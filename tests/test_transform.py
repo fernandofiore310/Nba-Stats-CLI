@@ -23,6 +23,7 @@ def team() -> dict[str, Any]:
         ("7-0", 213),
         ("6-11", 211),
         (None, None),
+        ("", None),
         (" ", None),
         ("\t", None),
     ],
@@ -37,6 +38,7 @@ def test_calc_height(height: str | None, expected_height: int) -> None:
     [
         ("229", 104),
         (None, None),
+        ("", None),
         (" ", None),
         ("\t", None),
     ],
@@ -46,7 +48,7 @@ def test_calc_weight(weight: str | None, expected_weight: int) -> None:
         calc_weight(weight=weight) == expected_weight
     )
 
-def test_team_params(team: dict[str, Any]) -> None: # Você passa o nome da função da fixture exatamente como o nome do argumento da sua função de teste. O pytest identifica o nome do parâmetro, executa a fixture primeiro e injeta o valor retornado por ela dentro do parâmetro do teste.
+def test_team_params(team: dict[str, Any]) -> None:
     assert team_params(team=team) == (2, 'East', 'Atlantic', 'Boston', 'Celtics', 'Boston Celtics', 'BOS')
 
 def test_player_params() -> None:
