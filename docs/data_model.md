@@ -76,9 +76,11 @@ Alguns pontos de consideracao: (1) estou em certa duvida quando a quais temporad
 Acredito que vou usar os mesmo ids da API. Digo isso pois, caso eu estivesse grando os ids e caso eu baixe o dado mais de uma vez, eu vou precisar criar o id novamente, ou seja, eu precisaria rodar o arquivo sql toda vez, o que acredito que seja um problema.
 
 ### M4. As perguntas que o banco precisa responder
-Quais foram os times que mais fizeram pontos em uma temporada? E vitorias
+Quais foram os times que mais fizeram pontos em uma temporada? Quais foram os que menos fizeram pontos? Como isso se relaciona com vitorias em uma temporada?
 
-Qual a altura media dos jogadores dos times que mais venceram/perderam? E dos que mais/menos pontuaram? (nao sera possivel sem conseguir distiguir jogadores atuais e antigos)
+Qual a altura media dos jogadores dos times que mais venceram/perderam? E dos que mais/menos pontuaram?
+Essa pergunta nao podera ser respondida, visto que nao temos o historico de times dos jogadores, e muito menos as temporadas que eles jogaram em cada time.
+O unico jeito de conseguir essa resposta é olhar manualmente em um site como o basketball reference, e pegar os rosters de cada time, e puxar cada jogador manualmente filtrando pelo first_name e last_name, mas acho complexo demais.
 
 Evolucao de pontos ao longo dos jogos das ultimas 20 temporadas.
 
@@ -87,10 +89,12 @@ Evolucao de pontos ao longo dos jogos das ultimas 20 temporadas.
 Comparacao de pontos em jogos de temporada regular contra postseason.
 
 Colleges com mais jogadores atualmente.
+Acredito que não vamos conseguir fazer essa análise pois não é possível distinguir jogadores históricos de atuais com os dados que estão sendo usados.
 
 Colleges que mais tiveram picks top 5 primeiro round.
 
-Dos jogadores atuais, quantos sao de cada classe de draft? (nao sera possivel sem conseguir distiguir jogadores atuais e antigos)
+Dos jogadores atuais, quantos sao de cada classe de draft? 
+Não será possível fazer essa análise, visto que não é possível distinguir jogadores históricos de atuais com os dados que estão sendo usados.
 
 Quais conferencias venceram mais jogos nos ultimos 10/25 anos? E divisoes?
 
@@ -100,6 +104,7 @@ Nos playoffs tem uma % maior de jogos que vao para a prorrogacao do que na tempo
 
 Jogar dentro de casa faz a diferenca nos playoffs? Calcular o aproveitamento dos times que jogaram em casa nos playoffs nos ultimos anos.
 
+Como os dias de descanso e os jogos em dias consecutivos (back-to-backs) afetam o saldo de pontos das equipes?
 
 ## Análise dos dados da API
 
