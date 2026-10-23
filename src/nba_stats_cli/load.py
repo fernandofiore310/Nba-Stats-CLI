@@ -30,7 +30,6 @@ def load_games(conn: Connection, client: ClientProtocol, seasons: list[int]) -> 
     params = {'per_page': 100, 'seasons[]': seasons}
     c = 0
 
-    paginas = 0
     games_list = []
 
     while c is not None:
@@ -43,7 +42,6 @@ def load_games(conn: Connection, client: ClientProtocol, seasons: list[int]) -> 
 
         meta = d['meta']
         c = meta.get('next_cursor')
-        paginas+=1
 
     record_games(conn=conn, games=games_list)
 
@@ -53,11 +51,11 @@ def load_players(conn: Connection, client: ClientProtocol) -> None:
     params = {'per_page': 100, 'team_ids[]': team_ids}
     c = 0
 
-    page = 0
     players_tuples_list = []
 
     while c is not None:
         d = client.get_data(endpoint=endpoint, params=params, cursor=c)
+        
         all_players = d['data']
         for player in all_players:
             p = player_params(player)
@@ -65,7 +63,5 @@ def load_players(conn: Connection, client: ClientProtocol) -> None:
 
         meta = d['meta']
         c = meta.get('next_cursor')
-        print(f"Next_Cursor: {c}")
-        page += 1
 
     record_players(conn=conn, players=players_tuples_list)

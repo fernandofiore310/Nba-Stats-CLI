@@ -144,3 +144,21 @@ Estava com lidando com um problema no meu codigo: estava conseguindo pegar, no m
 O erro era que tinha que fazer params = {seasons[]: [2025]}, visto que a API que estou trabalhando usa uma convencao de colchetes no nome do parametro, de modo que ela so entende que o parametro eh uma lista caso esses colchetes sejam escritos ao lado do nome do parametro. 
 Logo, troquei tanto para o season quando estava pegando os jogos, como para os ids de times quando estava pegando os jogadores.
 No momento, a decisao da base eh trabalhar com as temporadas 2024 e 2025. Veremos caso mais temporadas devem ser adicionadas. Mas a principio, apenas serao feitas analises com as duas temporadas citadas.
+
+### Esquema dos arquivos do projeto
+explore_*.py  (amanhã: cli.py)
+   │  abre a conexão, escolhe o cliente e chama a carga
+   ▼
+load.py  ── orquestra: busca → filtra → transforma → grava
+   │
+   ├──► client.py ──► API BALLDONTLIE
+   │      ClientProtocol: o contrato (um método get_data)
+   │      Client: o cliente real (retry, chave, rede)
+   │      (nos testes: FakeClient, sem rede)
+   │
+   ├──► transform.py   um dicionário da API → uma tupla
+   │      (não depende de nada: só recebe e devolve dados)
+   │
+   └──► db.py ──► SQLite (data/nba.db, ou :memory: nos testes)
+          connect: abre e roda o schema.sql
+          record_*: upsert, commit, rollback e raise

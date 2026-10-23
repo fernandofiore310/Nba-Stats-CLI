@@ -395,7 +395,10 @@ def test_load_teams(conn_memory: Connection) -> None:
     assert res.fetchall() ==  [(18, 'Minnesota Timberwolves'), (19, 'New Orleans Pelicans'), (20, 'New York Knicks'), (21, 'Oklahoma City Thunder'), (22, 'Orlando Magic')] 
 
     n_teams = load_teams(conn=conn_memory, client=client)
-    assert n_teams == 5
+
+    cur = create_cursor(conn=conn_memory)
+    res = cur.execute("SELECT COUNT(*) FROM teams")
+    assert res.fetchone()[0] == 5
 
 def test_load_games(conn_memory: Connection) -> None:
     client_t = FakeClientTeams()
@@ -427,6 +430,10 @@ def test_load_players(conn_memory: Connection) -> None:
     cur = create_cursor(conn=conn_memory)
     res = cur.execute("SELECT COUNT(*) FROM players")
     assert res.fetchone()[0] == 5
+
+    cur = create_cursor(conn=conn_memory)
+    res = cur.execute("SELECT height, weight FROM players WHERE id=105")
+    assert res.fetchall()[0] == (None, None)
 
     load_players(conn=conn_memory, client=client_p)
 
