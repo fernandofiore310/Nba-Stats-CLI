@@ -5,67 +5,16 @@
 -- Consulta: Nenhuma
 -- (explicação, quando o exercício pedir)
 
--- WITH teams_wins AS (
--- t.full_name,
--- t.abbreviation,
--- COUNT(
-
--- )
--- )
-
--- SELECT
--- t.full_name,
--- t.abbreviation,
--- COUNT(g.id) AS home_wins
--- FROM games g
--- JOIN teams t ON g.home_team_id=t.id
--- WHERE g.home_team_score > g.visitor_team_score AND g.season = 2025 AND g.postseason IS FALSE
--- GROUP BY t.id
--- ORDER BY home_wins DESC
--- ;
-
--- SELECT
--- t.full_name,
--- t.abbreviation,
--- COUNT(g.id) AS visitor_wins
--- FROM games g
--- JOIN teams t ON g.visitor_team_id=t.id
--- WHERE g.home_team_score < g.visitor_team_score AND g.season = 2025 AND g.postseason IS FALSE
--- GROUP BY t.id
--- ORDER BY visitor_wins DESC
--- ;
-
--- SELECT
--- t.full_name,
--- t.abbreviation,
--- SUM(g.home_team_score) total_points_home
--- FROM games g
--- JOIN teams t ON g.home_team_id=t.id
--- WHERE g.season = 2025 AND g.postseason IS FALSE
--- GROUP BY t.id
--- ORDER BY total_points_home DESC
--- ;
-
--- SELECT
--- t.full_name,
--- t.abbreviation,
--- SUM(g.visitor_team_score) total_points_visitor
--- FROM games g
--- JOIN teams t ON g.visitor_team_id=t.id
--- WHERE g.season = 2025 AND g.postseason IS FALSE
--- GROUP BY t.id
--- ORDER BY total_points_visitor DESC
--- ;
-
 WITH team_games AS (
     SELECT
+    g.id as game_id,
     t.id as team_id,
     t.full_name,
     t.abbreviation,
     g.season,
     g.date,
-    g.home_team_score,
-    g.visitor_team_score,
+    g.home_team_score points_scored,
+    g.visitor_team_score points_against,
     CASE
         WHEN g.home_team_score > g.visitor_team_score THEN 1
         WHEN g.home_team_score < g.visitor_team_score THEN 0
@@ -79,13 +28,14 @@ WITH team_games AS (
     UNION ALL
 
     SELECT
+    g.id as game_id,
     t.id as team_id,
     t.full_name,
     t.abbreviation,
     g.season,
     g.date,
-    g.home_team_score,
-    g.visitor_team_score,
+    g.visitor_team_score points_scored,
+    g.home_team_score points_against,
     CASE
         WHEN g.home_team_score > g.visitor_team_score THEN 0
         WHEN g.home_team_score < g.visitor_team_score THEN 1
@@ -96,13 +46,26 @@ WITH team_games AS (
     JOIN specific_dates s ON g.season=s.season
     WHERE g.postseason IS FALSE AND g.date <= s.last_reg_season_game_date AND g.id <> s.ist_final_id
     ORDER BY g.date
+),
+team_total_games_and_points_season AS (
+    SELECT
+    season, 
+    full_name,
+    SUM(result) total_wins,
+    SUM(points_scored) total_points
+    FROM team_games
+    GROUP BY team_id, season
 )
 
-SELECT 
+SELECT
+season,
 full_name,
-COUNT(team_id)
-FROM team_games
-WHERE season = 2024
-GROUP BY team_id
-HAVING COUNT(team_id) > 82
+total_wins,
+RANK() OVER (
+    PARTITION BY season
+    ORDER BY total_wins DESC
+) AS rank_wins,
+total_points
+FROM team_total_games_and_points_season
+ORDER BY season, rank_wins
 ;
