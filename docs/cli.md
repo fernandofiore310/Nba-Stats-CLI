@@ -17,3 +17,6 @@ O progrma sabe identificar qual programa foi digitado quando se usa o add_subpar
 
 ### O que o argparse gera sozinho quando o usuário digita --help?
 Ele gera uma resposta de "ajuda" na teoria, porem nao diz muito. Eh o unico argumento (opcional no caso) que ja vem com o argparse.
+
+### Desenho
+Fiquei sem tempo para implementar
