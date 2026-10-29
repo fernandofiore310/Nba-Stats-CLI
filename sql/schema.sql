@@ -52,3 +52,9 @@ CREATE TABLE IF NOT EXISTS games (
     CHECK (home_team_id <> visitor_team_id),
     CHECK (home_team_score >= 0 AND visitor_team_score >= 0)
 );
+
+CREATE TABLE IF NOT EXISTS specific_dates (
+    season INTEGER PRIMARY KEY,
+    last_reg_season_game_date TEXT NOT NULL,
+    ist_final_id INTEGER NOT NULL
+);
