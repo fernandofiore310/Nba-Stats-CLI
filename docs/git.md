@@ -12,5 +12,7 @@ A --- B --- E --- F
        C --- D
 Depois:
 A --- B --- E --- F --- C' --- D'
+Vale lembrar que eh sempre bom dar um fetch antes do rebase, para ficar atualizado com o estado atual da branch que queremos fazer o rebase em cima.
 
 ### Por que, depois de um rebase numa branch que já está no GitHub, o push comum é recusado? O que o --force-with-lease faz de diferente do --force?
+
