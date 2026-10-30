@@ -5,29 +5,30 @@
 -- Consulta: Nenhuma
 -- (explicação, quando o exercício pedir)
 
+-- Colleges que mais tiveram picks de loteria
 SELECT 
 p.college,
-COUNT(p.id) top_5_picks,
+COUNT(p.id) lottery_picks,
 RANK() OVER (
     ORDER BY COUNT(p.id) DESC
 ) AS position
 FROM players p
-WHERE p.college IS NOT NULL AND p.draft_round == 1 AND p.draft_number <= 5
+WHERE p.college IS NOT NULL AND p.draft_round == 1 AND p.draft_number <= 14
 GROUP BY p.college
-ORDER BY top_5_picks DESC
+ORDER BY lottery_picks DESC
 LIMIT 20
 ;
 
 -- Colleges que mais tiveram picks de primeiro round.
-SELECT 
-p.college,
-COUNT(p.id) first_round_picks,
-RANK() OVER (
-    ORDER BY COUNT(p.id) DESC
-) AS position
-FROM players p
-WHERE p.college IS NOT NULL AND p.draft_round == 1
-GROUP BY p.college
-ORDER BY first_round_picks DESC
-LIMIT 20
-;
+-- SELECT 
+-- p.college,
+-- COUNT(p.id) first_round_picks,
+-- RANK() OVER (
+--     ORDER BY COUNT(p.id) DESC
+-- ) AS position
+-- FROM players p
+-- WHERE p.college IS NOT NULL AND p.draft_round == 1
+-- GROUP BY p.college
+-- ORDER BY first_round_picks DESC
+-- LIMIT 20
+-- ;
