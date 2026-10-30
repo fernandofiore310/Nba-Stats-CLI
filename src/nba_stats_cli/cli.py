@@ -1,9 +1,11 @@
 import argparse
+import sys
 
 from nba_stats_cli.client import Client
 from nba_stats_cli.db import close_connection, connect
-from nba_stats_cli.load import load_teams, load_players, load_games
+from nba_stats_cli.load import load_games, load_players, load_teams
 from nba_stats_cli.queries import execute_query
+
 
 def load_data(args: argparse.Namespace) -> None:
     
@@ -11,6 +13,11 @@ def load_data(args: argparse.Namespace) -> None:
     client = Client()
     
     if args.table == "teams":
+
+        if args.seasons is not None:
+            print("Error: Flag --seasons cannot be used with argument teams")
+            sys.exit(1)
+
         nteams = load_teams(conn=conn, client=client)
 
         #teste para verificar se pegou os 30 times da nba
@@ -18,13 +25,21 @@ def load_data(args: argparse.Namespace) -> None:
         assert nteams == 30
 
     elif args.table == "players":
+        if args.seasons is not None:
+            print("Error: Flag --seasons cannot be used with argument players")
+            sys.exit(1)
 
         load_players(conn=conn, client=client)
 
     else:
-        seasons = [2024, 2025]
+        if args.seasons ==  None:
+            print("Error: Flag --seasons must be used with argument games")
+            sys.exit(1)
+        
+        else:
+            seasons = args.seasons
 
-        load_games(conn=conn, client=client, seasons=seasons)
+            load_games(conn=conn, client=client, seasons=seasons)
     
     close_connection(conn=conn)
 
@@ -32,7 +47,7 @@ def load_query(args: argparse.Namespace) -> None:
 
     conn = connect()
 
-    execute_query(conn=conn, args=args)
+    execute_query(conn=conn, file=args.data)
 
     close_connection(conn=conn)
 
@@ -72,13 +87,14 @@ def main() -> None:
     load_parser.add_argument(
         "--seasons",
         help="The specific seasons you want to get games data from",
-        type=int
+        type=int,
+        nargs="+"
     )
 
     # Adiciona argumento posicional 'data', na chamada de 'query'
     query_parser.add_argument(
         "data",
-        choices=["wins_and_scoring", "back-to-back", "colleges_picks"], # unicas 3 opcoes de valor para 'data'
+        choices=["wins_and_scoring", "back-to-back", "u_lottery_picks"], # unicas 3 opcoes de valor para 'data'
         help="Name of the data you want to see"
     )
 
