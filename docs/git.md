@@ -1,3 +1,5 @@
+## Perguntas
+
 ### Qual a diferença entre a main local e a origin/main?
 A main local eh a branch no meu computador. Posso atualizar e mexer em arquivos nela normalmente A origin/main eh uma especie de tracker da branch main remota. Basicamente ele marca onde a branch remota estava na ultima vez que eu interagi com o repositorio remoto.
 
@@ -15,4 +17,6 @@ A --- B --- E --- F --- C' --- D'
 Vale lembrar que eh sempre bom dar um fetch antes do rebase, para ficar atualizado com o estado atual da branch que queremos fazer o rebase em cima.
 
 ### Por que, depois de um rebase numa branch que já está no GitHub, o push comum é recusado? O que o --force-with-lease faz de diferente do --force?
+
+## Exercicio pratico
 
