@@ -12,6 +12,20 @@ paths = {
     "colleges_lottery_picks": "sql/queries/colleges_lottery_picks.sql"
 }
 
+def print_result(columns: list[str], lines: list[tuple]) -> None:
+
+    widths = []
+    
+    for i, column in enumerate(columns):
+        width = 0
+        width = max(len(column), width)
+        for line in lines:
+            width = max(len(str(line[i])), width)
+        widths.append(width)
+
+    header = "|".join(f"{c :< {int(widths[i])}}" for i, c in enumerate(columns))
+    print(header)
+
 def load_data(args: argparse.Namespace) -> None:
     
     conn = connect()
@@ -62,6 +76,8 @@ def load_query(args: argparse.Namespace) -> None:
 
     for line in lines:
         print(line)
+    
+    print_result(columns=columns, lines=lines)
     
     close_connection(conn=conn)
 
