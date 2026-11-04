@@ -13,7 +13,7 @@ paths = {
     "colleges_lottery_picks": "sql/queries/colleges_lottery_picks.sql"
 }
 
-def print_result(columns: list[str], lines: list[tuple[str, Any]]) -> None:
+def print_result(columns: list[str], lines: list[tuple[str, ...]]) -> None:
 
     widths = []
     

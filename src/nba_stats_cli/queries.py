@@ -3,7 +3,7 @@ from sqlite3 import Connection
 from typing import Any
 
 
-def execute_query(conn: Connection, script: str) -> tuple[list[str], list[tuple[str, Any]]]:
+def execute_query(conn: Connection, script: str) -> tuple[list[str], list[tuple[str, ...]]]:
 
     columns = []
 
