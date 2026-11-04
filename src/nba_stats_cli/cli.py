@@ -1,5 +1,6 @@
 import argparse
 import sys
+from typing import Any
 
 from nba_stats_cli.client import Client
 from nba_stats_cli.db import close_connection, connect
@@ -12,7 +13,7 @@ paths = {
     "colleges_lottery_picks": "sql/queries/colleges_lottery_picks.sql"
 }
 
-def print_result(columns: list[str], lines: list[tuple]) -> None:
+def print_result(columns: list[str], lines: list[tuple[str, Any]]) -> None:
 
     widths = []
     
@@ -124,7 +125,7 @@ def main() -> None:
     # Adiciona argumento posicional 'data', na chamada de 'query'
     query_parser.add_argument(
         "data",
-        choices=[k for k in paths.keys()], # unicas 3 opcoes de valor para 'data'
+        choices=[k for k in paths], # unicas 3 opcoes de valor para 'data'
         help="Name of the data you want to see"
     )
 
