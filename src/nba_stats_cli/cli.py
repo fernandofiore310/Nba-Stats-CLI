@@ -6,6 +6,11 @@ from nba_stats_cli.db import close_connection, connect
 from nba_stats_cli.load import load_games, load_players, load_teams
 from nba_stats_cli.queries import execute_query
 
+paths = {
+    "wins_and_scoring": "sql/queries/high_low_scoring_teams_wins.sql",
+    "back-to-back": "sql/queries/back_to_back.sql",
+    "colleges_lottery_picks": "sql/queries/colleges_lottery_picks.sql"
+}
 
 def load_data(args: argparse.Namespace) -> None:
     
@@ -47,8 +52,17 @@ def load_query(args: argparse.Namespace) -> None:
 
     conn = connect()
 
-    execute_query(conn=conn, file=args.data)
+    with open(paths[args.data], "r", encoding="utf-8") as f:
+        script = f.read()
 
+    columns, lines = execute_query(conn=conn, script=script)
+
+    for column in columns:
+        print(column)
+
+    for line in lines:
+        print(line)
+    
     close_connection(conn=conn)
 
 def main() -> None:
@@ -72,8 +86,8 @@ def main() -> None:
 
     # Cria subparser chamado query
     query_parser = subparsers.add_parser(
-            "query",
-            help="Show the specified query related to the argument passed"
+        "query",
+        help="Show the specified query related to the argument passed"
         )
 
     # Adiciona argumento posicional 'table', na chamada de 'load'
@@ -94,7 +108,7 @@ def main() -> None:
     # Adiciona argumento posicional 'data', na chamada de 'query'
     query_parser.add_argument(
         "data",
-        choices=["wins_and_scoring", "back-to-back", "u_lottery_picks"], # unicas 3 opcoes de valor para 'data'
+        choices=[k for k in paths.keys()], # unicas 3 opcoes de valor para 'data'
         help="Name of the data you want to see"
     )
 
