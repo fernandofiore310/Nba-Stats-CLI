@@ -24,8 +24,14 @@ def print_result(columns: list[str], lines: list[tuple[str, Any]]) -> None:
             width = max(len(str(line[i])), width)
         widths.append(width)
 
-    header = "|".join(f"{c :< {int(widths[i])}}" for i, c in enumerate(columns))
-    print(header)
+    print("\n")
+    
+    header = " | ".join(f"{c:<{int(widths[i])}}" for i, c in enumerate(columns))
+    print(f"{header}\n")
+
+    for line in lines:
+        row = " | ".join(f"{l:<{int(widths[i])}}" for i, l in enumerate(line))
+        print(row)
 
 def load_data(args: argparse.Namespace) -> None:
     
@@ -71,12 +77,6 @@ def load_query(args: argparse.Namespace) -> None:
         script = f.read()
 
     columns, lines = execute_query(conn=conn, script=script)
-
-    for column in columns:
-        print(column)
-
-    for line in lines:
-        print(line)
     
     print_result(columns=columns, lines=lines)
     
