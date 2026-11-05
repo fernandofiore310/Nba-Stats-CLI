@@ -17,3 +17,37 @@ O progrma sabe identificar qual programa foi digitado quando se usa o add_subpar
 
 ### O que o argparse gera sozinho quando o usuário digita --help?
 Ele gera uma resposta de "ajuda" na teoria, porem nao diz muito. Eh o unico argumento (opcional no caso) que ja vem com o argparse.
+
+### Desenho
+Antes de tudo, o Parser principal nao vai ter argumentos posicionais. Acredito que o usuario so vai querer rodar o arquivo com as funcoes (subcomandos/subparsers). Logo, nao serao necessarios argumentos posicionais no Parser principal. Ele vai ter alguns argumentos opcionais, como o --help e o --verbose por exemplo. Acredito que esses possam ajudar o usuario durante o uso do programa.
+Agora, os subparsers terao argumentos posicionais e opcionais.
+
+- load
+Ele sera o comando responsavel pela extracao dos dados, desde o contato com a API, ate os dados manipulados/transformados no banco de dados.
+Ele tera um argumento posicional, que podera ter tres valores: teams, players e games (posso usar o checks para isso se nao me engano, e sem default pois caso o usuario nao especifique o programa deve travar e nao carregar algo que nao foi pedido). Alem disso, ele tera um argumento opcional para temporadas, que so fara sentido para o load games. Na versao atual do projeto, so faz sentido pegar as temporadas 2024 e 2025. O valor default (caso o usuario digite apenas --seasons sera as temporadas 2024 e 2025). Quem sabe em versoes maois avancadas isso melhore. 
+Exemplos de uso:
+load teams
+> Loading teams...
+> Teams loaded in database
+
+load players
+> Loading players...
+> Players loaded in database
+
+load games
+> ERROR (mensagem de erro que posso definir)
+
+load games
+> Loading games from [seasons] season(s)
+> Games loaded in database
+
+- query
+Esse subparser vai ser responsavel por rodar as tres queries que defini (vitorias, back-to-back e colleges) e outras possiveis que eu queira adicionar em outras versoes do projeto.
+Nesse caso, ela vai precisar ter um argumento posicional, que vou definir um nome curto (noa vai ser o nomme do arquivo .sql) quando as queries estiverem prontas, que vai especificar exatamente qual query devera ser rodada (que se encontram na pasta sql/queries/) e exibida no terminal.
+Exemplos de uso:
+
+query wins_points
+> [query formatada de maneira bonita]
+
+query
+> ERROR (mensagem de erro que posso definir)

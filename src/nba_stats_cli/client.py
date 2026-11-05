@@ -33,13 +33,12 @@ def try_and_retry(endpoint: str, headers: dict[str, Any], params: dict[str, Any]
     if cursor is not None: d['cursor'] = cursor
     
     while tentativas < MAX_TRIES:
-        print(f"Tentativa numero {tentativas+1}")
+        print(f"Attempt number {tentativas+1}")
 
         backoff: int = TEMPO_BASE * (2**tentativas)
 
         try:    
             r = requests.get(url=endpoint, headers=headers, params=d, timeout=timeout) #se der erro de timout, essa propria linha vai lancar a excecao
-            print(r.url)
         
         except excecoes: #nao se usa or em except, pois nesse caso ele captura apenas a primeira excecao
             # erro de timout nao tem status ou conexao nao tem status. Por isso tratamos eles aqui
@@ -47,7 +46,7 @@ def try_and_retry(endpoint: str, headers: dict[str, Any], params: dict[str, Any]
             tentativas+=1
             continue
         
-        print(f"Status: {r.status_code}, Tipo: {type(r.status_code)}")
+        print(f"Status: {r.status_code}")
         status = r.status_code
     
         if status == 429:
@@ -60,7 +59,7 @@ def try_and_retry(endpoint: str, headers: dict[str, Any], params: dict[str, Any]
             else:
                 espera = backoff
             
-            print(f"Tempo a se esperar pos 429: {espera}")
+            print(f"Time to wait after 429 status code: {espera}")
             time.sleep(espera)
             tentativas+=1
         
@@ -74,13 +73,13 @@ def try_and_retry(endpoint: str, headers: dict[str, Any], params: dict[str, Any]
         else:
             return r
         
-    raise LimiteTentativasError("Numero maximo de tentativas estourado!")
+    raise LimiteTentativasError("Max number of attempts exceeded!")
 
 def get_page(endpoint: str, params: dict[str, Any], cursor: int | None = None) -> dict[str, Any]:
 
     load_dotenv()
     api_key = os.getenv(key="BALLDONTLIE_API_KEY")
-    if api_key is None: raise RuntimeError("Chave da API não foi encontrada!")
+    if api_key is None: raise RuntimeError("API key not found!")
 
     headers={"Authorization": api_key}
 

@@ -52,7 +52,8 @@ team_total_games_and_points_season AS (
     season, 
     full_name,
     SUM(result) total_wins,
-    SUM(points_scored) total_points
+    SUM(points_scored) total_points_scored,
+    SUM(points_against) total_points_against
     FROM team_games
     GROUP BY team_id, season
 )
@@ -65,7 +66,8 @@ RANK() OVER (
     PARTITION BY season
     ORDER BY total_wins DESC
 ) AS rank_wins,
-total_points
+total_points_scored,
+total_points_against
 FROM team_total_games_and_points_season
 ORDER BY season, rank_wins
 ;
