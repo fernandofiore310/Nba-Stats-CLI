@@ -150,27 +150,27 @@ r as queries, onde preciso formatar certinho a exibicao dos resultados e fazer a
 ### Passo 8
 Antes: Confesso que ainda nao entendi muito bem o que o --force-with-lease faz. Mas, sei que nao deu para realizar o git push normal pois o ponteiro da branch remota estava para tras.
 
-O que aconteceu aqui foi que, com o comando git push --force-with-lease o git verificou se o ponteiro do repositório remoto estava ainda no mesmo lugar que o repositório local achava que ele estava. Vendo que estava, ele apenas descartou os commits do caminho ancestral e atualizou o ponteiro do remoto para o novo caminho unificado criado pelo rebase.
+O que aconteceu aqui foi que, com o comando git push --force-with-lease o git verificou se o ponteiro do repositório remoto estava ainda no mesmo lugar que o repositório local achava que ele estava. Vendo que estava, ele apenas descartou os commits do caminho antigo da branch e atualizou o ponteiro do remoto para o novo caminho unificado criado pelo rebase.
 
 ## Esquema do que aconteceu 
 
+Antes do exercicio, ja havia dado push na branch feature:
+
+     origin/main e main
+      |
+A --- B
+      \
+       C --- D - CLI_feature e origin/CLI_feature
+
 Antes do fetch:
 
-   origin/CLI_feature, origin/main e main
+   origin/main e main
       |
-A --- B --- E --- F
+A --- B
       \
-       C --- D - CLI_feature
+       C --- D - CLI_feature e origin/CLI_feature
 
 Depois do fetch:
-
-     origin/CLI_feature e main
-      |
-A --- B --- E --- F - origin/main
-      \
-       C --- D - CLI_feature
-
-Depois do push na branch feature:
 
      main
       |
