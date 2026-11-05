@@ -17,8 +17,8 @@ A --- B --- E --- F --- C' --- D'
 Vale lembrar que eh sempre bom dar um fetch antes do rebase, para ficar atualizado com o estado atual da branch que queremos fazer o rebase em cima.
 
 ### Por que, depois de um rebase numa branch que já está no GitHub, o push comum é recusado? O que o --force-with-lease faz de diferente do --force?
-O push comum é recusado porque a uma divergência de caminhos entre o repositório remoto e o local. Enquanto o local aponta para o caminho "unificado" formado pelo rebase, o ponteiro do repositório remoto aponta para o caminho antigo da branch (ancestral). Quando se tenta dar um push, o git se recusa a apenas descartar os commits que estavam na branch, e por isso não permite. Por isso que se usa o --force, o usuário basicamente está forcando o git a aceitar o push, pois sabe que a situação já foi resolvida e pode descartar os commits antigos, dado que estão no caminho novo criado pelo rebase.
-O force with lease, no entanto, é uma maneira mais preventiva e correta de se fazer isso, dado que ele faz com que o git de uma espécie de fetch interno e veja se o ponteiro do remoto ainda está no local que o repositório local acha que ele está. Caso esteja, o force ocorre, caso contrário, não ocorre.
+O push comum é recusado porque a uma divergência de caminhos entre o repositório remoto e o local. Enquanto o local aponta para o caminho "unificado" formado pelo rebase, o ponteiro do repositório remoto aponta para o caminho antigo da branch. Quando se tenta dar um push, o git se recusa a apenas descartar os commits que estavam na branch, e nao consegue avancar o ponteiro, dado que o caminho em que o remoto se encontra nao eh o ancestral do caminho que o local esta pos rebase e por isso não permite. Por isso que se usa o --force, o usuário basicamente está forcando o git a aceitar o push, pois sabe que a situação já foi resolvida e pode descartar os commits antigos, dado que estão no caminho novo criado pelo rebase.
+O force with lease, no entanto, é uma maneira mais preventiva e correta de se fazer isso, dado que ele compara o repositorio remoto com o ponteiro origin/CLI_feature do ultimo fetch feito. Caso sejam iguais, o force ocorre, caso contrário, não ocorre.
 
 ## Exercicio pratico
 ### Passo 1, 2, 3
@@ -156,13 +156,21 @@ O que aconteceu aqui foi que, com o comando git push --force-with-lease o git ve
 
 Antes do fetch:
 
-   origin/CLI_feature e main
+   origin/CLI_feature, origin/main e main
+      |
+A --- B --- E --- F
+      \
+       C --- D - CLI_feature
+
+Depois do fetch:
+
+     origin/CLI_feature e main
       |
 A --- B --- E --- F - origin/main
       \
        C --- D - CLI_feature
 
-Depois do fetch:
+Depois do push na branch feature:
 
      main
       |

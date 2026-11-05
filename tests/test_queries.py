@@ -20,3 +20,4 @@ def test_execute_query(conn_memory: Connection, teams_list: list[tuple[int, str,
 
     assert columns == ["city", "name", "abbreviation"]
     assert lines == [('Boston', 'Celtics', 'BOS'), ('Charlotte', 'Hornets', 'CHA'), ('Cleveland', 'Cavaliers', 'CLE')]
+

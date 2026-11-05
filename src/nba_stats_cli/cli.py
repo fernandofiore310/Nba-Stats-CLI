@@ -1,5 +1,6 @@
 import argparse
 import sys
+from typing import Any
 
 from nba_stats_cli.client import Client
 from nba_stats_cli.db import close_connection, connect
@@ -12,7 +13,7 @@ paths = {
     "colleges_lottery_picks": "sql/queries/colleges_lottery_picks.sql"
 }
 
-def print_result(columns: list[str], lines: list[tuple[str, ...]]) -> None:
+def print_result(columns: list[str], lines: list[tuple[Any, ...]]) -> None:
 
     widths = []
     
@@ -20,7 +21,10 @@ def print_result(columns: list[str], lines: list[tuple[str, ...]]) -> None:
         width = 0
         width = max(len(column), width)
         for line in lines:
-            width = max(len(str(line[i])), width)
+            if line[i] is None:
+                width = max(len("-"), width)
+            else:
+                width = max(len(str(line[i])), width)
         widths.append(width)
 
     print("\n")
@@ -29,7 +33,7 @@ def print_result(columns: list[str], lines: list[tuple[str, ...]]) -> None:
     print(f"{header}\n")
 
     for line in lines:
-        row = " | ".join(f"{l:<{int(widths[i])}}" for i, l in enumerate(line))
+        row = " | ".join(f"{str(l) if l is not None else '-':<{int(widths[i])}}" for i, l in enumerate(line))
         print(row)
 
 def load_data(args: argparse.Namespace) -> None:
