@@ -17,6 +17,8 @@ A --- B --- E --- F --- C' --- D'
 Vale lembrar que eh sempre bom dar um fetch antes do rebase, para ficar atualizado com o estado atual da branch que queremos fazer o rebase em cima.
 
 ### Por que, depois de um rebase numa branch que já está no GitHub, o push comum é recusado? O que o --force-with-lease faz de diferente do --force?
+O push comum é recusado porque a uma divergência de caminhos entre o repositório remoto e o local. Enquanto o local aponta para o caminho "unificado" formado pelo rebase, o ponteiro do repositório remoto aponta para o caminho antigo da branch (ancestral). Quando se tenta dar um push, o git se recusa a apenas descartar os commits que estavam na branch, e por isso não permite. Por isso que se usa o --force, o usuário basicamente está forcando o git a aceitar o push, pois sabe que a situação já foi resolvida e pode descartar os commits antigos, dado que estão no caminho novo criado pelo rebase.
+O force with lease, no entanto, é uma maneira mais preventiva e correta de se fazer isso, dado que ele faz com que o git de uma espécie de fetch interno e veja se o ponteiro do remoto ainda está no local que o repositório local acha que ele está. Caso esteja, o force ocorre, caso contrário, não ocorre.
 
 ## Exercicio pratico
 ### Passo 1, 2, 3
@@ -147,3 +149,49 @@ r as queries, onde preciso formatar certinho a exibicao dos resultados e fazer a
 
 ### Passo 8
 Antes: Confesso que ainda nao entendi muito bem o que o --force-with-lease faz. Mas, sei que nao deu para realizar o git push normal pois o ponteiro da branch remota estava para tras.
+
+O que aconteceu aqui foi que, com o comando git push --force-with-lease o git verificou se o ponteiro do repositório remoto estava ainda no mesmo lugar que o repositório local achava que ele estava. Vendo que estava, ele apenas descartou os commits do caminho ancestral e atualizou o ponteiro do remoto para o novo caminho unificado criado pelo rebase.
+
+## Esquema do que aconteceu 
+
+Antes do fetch:
+
+   origin/CLI_feature e main
+      |
+A --- B --- E --- F - origin/main
+      \
+       C --- D - CLI_feature
+
+Depois do fetch:
+
+     main
+      |
+A --- B --- E --- F - origin/main
+      \
+       C --- D - CLI_feature e origin/CLI_feature
+
+Depois do rebase:
+
+     main     origin/main
+      |           |
+A --- B --- E --- F --- C' --- D' - CLI_feature
+      \
+       C --- D - origin/CLI_feature
+
+Depois do git push --force-with-lease:
+
+     main     origin/main
+      |           |
+A --- B --- E --- F --- C' --- D' - CLI_feature e origin/CLI_feature
+
+Depois do PR valido e merge:
+
+     main
+      |           
+A --- B --- E --- F --- C' --- D' - CLI_feature, origin/CLI_feature e origin/main
+
+Depois de um git pull local:
+         
+A --- B --- E --- F --- C' --- D' - CLI_feature, origin/CLI_feature, origin/main e main
+
+O que faz a main local andar é um pull do repositório remoto. Enquanto o dev mexe na branch e no rebase, sua main fica intacta, ainda na sua ultima atualização.
