@@ -35,7 +35,7 @@ Follow these instructions to install and configure the project.
 **1. Clone the repository**
 
 ```bash
-git clone -b CLI_feature https://github.com/fernandofiore310/Nba-Stats-CLI.git
+git clone https://github.com/fernandofiore310/Nba-Stats-CLI.git
 ```
 
 **2. Navigate to the project directory**
@@ -66,7 +66,7 @@ On Windows (PowerShell):
 
 **5. Install the project and development dependencies**
 
-Make sure you are using a recent version of pip:
+Make sure you are using a recent version of pip (it requires pip 25.1 or above):
 
 ```bash
 python -m pip install --upgrade pip
@@ -218,7 +218,7 @@ Approximate loading times:
 |------|----------------|-------------|
 | Teams | A few seconds | Usually requires only one API request |
 | Games | Approximately 5 minutes | Games are retrieved in pages of up to 100 records |
-| Players | Several minutes (6197 players total) | Players are retrieved through multiple paginated requests |
+| Players | Several minutes (a lot) | Players are retrieved through multiple paginated requests |
 
 These are rough estimates. Actual loading times depend on the number of records, API response times, rate limits, and retries.
 
@@ -281,15 +281,15 @@ The CLI displays query results directly in the terminal.
 For example, the college lottery picks query returns the following columns:
 
 ```text
-college | lottery_picks | rank
+college              | lottery_picks | rank
 ```
 
 Example output format (illustrative, not actual NBA results):
 
 ```text
-('Example University A', 12, 1)
-('Example University B', 10, 2)
-('Example University C', 8, 3)
+Example University A | 12            | 1
+Example University B | 10            | 2
+Example University C | 8             | 3
 ```
 
 Actual results depend on the data loaded into the local database.

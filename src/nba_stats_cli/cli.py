@@ -1,6 +1,5 @@
 import argparse
 import sys
-from typing import Any
 
 from nba_stats_cli.client import Client
 from nba_stats_cli.db import close_connection, connect
